@@ -231,7 +231,7 @@ let sync=store.get("ick_sync",{});sync={repo:sync.repo||"paulomatic1403-bot/icke
 const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
 function neu(){return{id:Date.now().toString(36),datum:today(),ak:"U10",lg:"",trainer:"",dauer:"",thema:"",angemeldet:[],anwesend:[],kinder:{},staffeln:[],staffelKinder:{},gruppe:{inhalte:"",rpe:"",stimmung:"",bes:"",fragen:""}}}
 function norm(e){const b=neu();e={...b,...e,gruppe:{...b.gruppe,...(e.gruppe||{})}};
- ["angemeldet","anwesend","staffeln"].forEach(k=>{if(!Array.isArray(e[k]))e[k]=[]});e.kinder=e.kinder||{};e.staffelKinder=e.staffelKinder||{};if(!CFG[e.ak])e.ak="U10";return e}
+ ["angemeldet","anwesend","staffeln","offen","abgesagt"].forEach(k=>{if(!Array.isArray(e[k]))e[k]=[]});e.kinder=e.kinder||{};e.staffelKinder=e.staffelKinder||{};if(!CFG[e.ak])e.ak="U10";return e}
 let S=norm(store.get("ick_current",null)||neu());
 const ui={tab:"kinder",mode:"kind",kid:null,krit:0,stKrit:0,openSt:-1,other:false,q:""};
 function persist(){store.set("ick_current",S);const h=store.get("ick_hist",{});h[S.id]=S;store.set("ick_hist",h)}
@@ -284,9 +284,12 @@ function vKinder(){
  if(S.angemeldet.length){
   h+=`<h3>Angemeldet (${S.angemeldet.length})</h3><p class="hint" style="margin-top:-4px">Alle sind als da markiert. Wer fehlt, auf Fehlt tippen.</p><div id="attList">${S.angemeldet.map(attRow).join("")}</div>`;
  }
- h+=`<h3>${S.angemeldet.length?"Weitere Kinder":"Kinder auswählen"}</h3>
-  <div class="field search"><label class="sr" for="q">Name suchen</label><input id="q" type="search" placeholder="Name suchen" value="${esc(ui.q)}" autocomplete="off"></div>
-  <div id="pool">${pool()}</div>
+ if(S.offen.length){h+=`<h3>Antwort offen (${S.offen.length})</h3><p class="hint" style="margin-top:-4px">Antippen, wenn das Kind doch kommt.</p><div class="chips">${S.offen.map(n=>chip(kader.find(k=>k.name===n)||{name:n,jg:""})).join("")}</div>`}
+ if(S.abgesagt.length)h+=`<p class="hint" style="margin-top:12px">Abgesagt: ${S.abgesagt.map(disp).map(esc).join(", ")}</p>`;
+ const prep=S.angemeldet.length||S.offen.length;
+ const poolH=`<div class="field search"><label class="sr" for="q">Name suchen</label><input id="q" type="search" placeholder="Name suchen" value="${esc(ui.q)}" autocomplete="off"></div><div id="pool">${pool()}</div>`;
+ h+=prep?`<details class="grp" ${ui.q||ui.other?"open":""}><summary>Weitere Kinder hinzufügen</summary>${poolH}</details>`:`<h3>Kinder auswählen</h3>${poolH}`;
+ h+=`
   <details style="margin-top:12px"><summary>Gast oder Nachrücker ohne Kaderliste</summary>
    <div class="btnrow"><input id="gast" placeholder="Nachname, Vorname" aria-label="Name Gast" style="flex:2 1 200px"><button class="btn" data-act="gast">Hinzufügen</button></div></details>
  </section>`;
@@ -299,9 +302,9 @@ function attRow(n){const da=S.anwesend.includes(n);
 function chip(k){const on=S.anwesend.includes(k.name);return `<button type="button" class="chip" data-act="kid" data-kid="${esc(k.name)}" aria-pressed="${on}"><span class="ck" aria-hidden="true">✓</span>${esc(disp(k.name))}${k.jg?` <small>${esc(k.jg)}</small>`:""}</button>`}
 function pool(){
  const c=CFG[S.ak],q=ui.q.trim().toLowerCase();
- const gaeste=S.anwesend.filter(n=>!kader.find(k=>k.name===n)&&!S.angemeldet.includes(n)).map(n=>({name:n,jg:""}));
+ const gaeste=S.anwesend.filter(n=>!kader.find(k=>k.name===n)&&!S.angemeldet.includes(n)&&!S.offen.includes(n)).map(n=>({name:n,jg:""}));
  if(!kader.length&&!gaeste.length)return `<div class="empty"><p>Noch kein Kader auf diesem Gerät.</p><button class="btn primary" data-act="panel" data-p="setup">Kader laden</button></div>`;
- const list=kader.filter(k=>!S.angemeldet.includes(k.name));
+ const list=kader.filter(k=>!S.angemeldet.includes(k.name)&&!S.offen.includes(k.name));
  const hit=k=>!q||k.name.toLowerCase().includes(q)||disp(k.name).toLowerCase().includes(q);
  const by=(arr)=>arr.slice().sort((a,b)=>sortN(a.name,b.name));
  let h="";
@@ -503,7 +506,7 @@ async function ladePrep(silent){
 // ---------- Export ----------
 function toMarkdown(e){
  let m=`# Einheit ${e.datum} · ${e.ak}${e.lg?" · LG "+e.lg:""}\n\nTrainer: ${e.trainer} · Dauer: ${e.dauer} · Thema: ${e.thema}\nAnwesend (${e.anwesend.length}): ${e.anwesend.join(" | ")}\n`;
- const fehlt=(e.angemeldet||[]).filter(n=>!e.anwesend.includes(n));if(fehlt.length)m+=`Angemeldet, aber gefehlt (${fehlt.length}): ${fehlt.join(" | ")}\n`;m+="\n";
+ const fehlt=(e.angemeldet||[]).filter(n=>!e.anwesend.includes(n));if(fehlt.length)m+=`Angemeldet, aber gefehlt (${fehlt.length}): ${fehlt.join(" | ")}\n`;const of=(e.offen||[]).filter(n=>!e.anwesend.includes(n));if(of.length)m+=`Antwort offen, nicht gekommen (${of.length}): ${of.join(" | ")}\n`;if((e.abgesagt||[]).length)m+=`Abgesagt (${e.abgesagt.length}): ${e.abgesagt.join(" | ")}\n`;m+="\n";
  const j=o=>Object.entries(o||{}).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
  e.anwesend.forEach(n=>{const d=e.kinder[n];if(!d)return;const mess=j(d.mess),mot=j(d.mot),pers=j(d.pers),tg=(d.tags||[]).join(", ");if(!mess&&!mot&&!pers&&!tg&&!d.notiz)return;
   m+=`## ${n}\n`+(mess?`* Messwerte: ${mess}\n`:"")+(mot?`* Motorik: ${mot}\n`:"")+(pers?`* Persönlichkeit: ${pers}\n`:"")+(tg?`* Auffällig: ${tg}\n`:"")+(d.notiz?`* Notiz: ${d.notiz}\n`:"")+"\n"});
