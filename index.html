@@ -4,166 +4,211 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
 <title>Laufzettel Athletik · Westfalenauswahl Ickern</title>
 <style>
-/* WTV Farben laut WTV_Uebungskatalog.xlsm */
-:root{--ink:#262626;--red:#EC1C24;--lime:#E6F3A1;--grey:#F2F2F2;--mid:#595959;--line:#BFBFBF;--white:#fff}
+/* WTV Farben laut WTV_Uebungskatalog.xlsm. Rot nur als Akzent, Text auf Rot in dunklerem Rot (#B5121B) für WCAG AA */
+:root{--ink:#262626;--ink2:#595959;--line:#D9D9D9;--line2:#BFBFBF;--grey:#F2F2F2;--bg:#FAFAFA;--lime:#E6F3A1;--limeD:#C9E26A;--red:#EC1C24;--redD:#B5121B;--white:#fff;--r:10px;--nav:68px}
 *{box-sizing:border-box}
-body{margin:0;font-family:Calibri,Carlito,"Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--white);font-size:17px;line-height:1.4}
-header{padding:16px 16px 8px;border-bottom:3px solid var(--red)}
-h1{font-size:26px;margin:0}
-.sub{color:var(--mid);font-size:14px;margin-top:2px}
-main{max-width:1100px;margin:0 auto;padding:12px 16px 120px}
-nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-nav.tabs button{flex:1 1 auto}
-button{font:inherit;min-height:44px;padding:8px 14px;border:1px solid var(--ink);background:var(--white);color:var(--ink);border-radius:6px;cursor:pointer}
-button.primary{background:var(--ink);color:var(--white)}
-button[aria-selected="true"],button[aria-pressed="true"]{background:var(--ink);color:var(--white)}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--red);outline-offset:2px}
-.bar{background:var(--red);color:var(--white);font-weight:700;font-size:19px;padding:6px 10px;margin:18px 0 10px;border-radius:4px}
-label{display:block;font-weight:700;font-size:15px;margin:8px 0 4px}
-input,select,textarea{font:inherit;width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--lime);color:var(--ink)}
-textarea{min-height:80px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
-.card{border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0;background:var(--white)}
-.card h3{margin:0 0 6px;font-size:20px}
-.muted{color:var(--mid);font-size:14px}
-.rate{display:flex;align-items:center;gap:6px;margin:6px 0;flex-wrap:wrap}
-.rate .lab{flex:1 1 150px;font-size:15px}
-.rate button{min-width:44px;padding:6px 0}
-.kids{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
-.kid{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:6px 10px;min-height:44px;background:var(--grey)}
-.kid input{width:24px;min-height:24px;height:24px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.row>*{flex:1 1 auto}
-details summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;display:none;z-index:9}
-.foot{position:fixed;left:0;right:0;bottom:0;background:var(--white);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.chip{display:inline-block;border:1px solid var(--ink);border-radius:14px;padding:2px 10px;margin:2px;font-size:14px}
-.sep{border-left:3px solid var(--red);padding-left:8px}
-table{border-collapse:collapse;width:100%}
-th,td{border:1px solid var(--line);padding:6px;text-align:left;font-size:15px}
-th{background:var(--ink);color:#fff}
-.hidden{display:none}
-@media print{.foot,nav.tabs,button{display:none}}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Calibri,Carlito,"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.4}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Kopf */
+header.top{position:sticky;top:0;z-index:20;background:var(--white);border-top:4px solid var(--red);border-bottom:1px solid var(--line);padding:8px 16px calc(8px)}
+.topin{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.brand{flex:1;min-width:0}
+.eyebrow{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);font-weight:700}
+.sess{font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line2)}
+.status.ok .dot{background:#2E7D32}.status.todo .dot{background:var(--red)}
+.iconbtn{min-width:44px;min-height:44px;border:1px solid var(--line);background:var(--white);border-radius:var(--r);cursor:pointer;font-weight:700}
+
+main{max-width:760px;margin:0 auto;padding:12px 16px calc(var(--nav) + 28px)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
+h2{font-size:20px;margin:0 0 10px}
+h3{font-size:15px;margin:16px 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em}
+.h2row{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.big{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.hint{color:var(--ink2);font-size:14px;margin:6px 0 0}
+.lbl{display:block;font-weight:700;font-size:15px;margin:0 0 6px}
+label.lbl{cursor:pointer}
+.field{margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+input,select,textarea{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line2);border-radius:var(--r);background:var(--lime)}
+input:focus,select:focus,textarea:focus{background:var(--white);border-color:var(--ink)}
+textarea{min-height:84px;resize:vertical}
+details>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:700;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"›";display:inline-block;transition:transform .15s;font-size:22px;line-height:1;width:14px}
+details[open]>summary::before{transform:rotate(90deg)}
+ul.fokus{margin:4px 0 0;padding-left:20px;color:var(--ink2)}
+ul.fokus li{margin:4px 0}
+
+/* Knöpfe */
+.btn{min-height:48px;padding:10px 18px;border-radius:var(--r);border:1px solid var(--ink);background:var(--white);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.primary{background:var(--ink);color:var(--white)}
+.btn.ghost{border-color:var(--line2)}
+.btn.danger{border-color:var(--line2);color:var(--redD)}
+.btn.wide{width:100%}
+.btn[disabled]{opacity:.5;cursor:default}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}.btnrow>.btn{flex:1 1 160px}
+.segs{display:flex;gap:6px;flex-wrap:wrap}
+.seg{min-height:44px;min-width:52px;padding:8px 12px;border:1px solid var(--line2);background:var(--white);border-radius:var(--r);cursor:pointer;font-weight:700}
+.seg[aria-pressed="true"]{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.segs.fill .seg{flex:1 1 0;min-width:0;padding:8px 4px}
+.segs.two{display:grid;grid-template-columns:1fr 1fr}
+
+/* Kinder Chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:8px 14px;border:1px solid var(--line2);border-radius:999px;background:var(--white);cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-align:left}
+.chip small{color:var(--ink2);font-size:12px}
+.chip .ck{display:none;font-weight:700}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.chip[aria-pressed="true"] small{color:#D9D9D9}
+.chip[aria-pressed="true"] .ck{display:inline}
+.grp{margin-top:14px}
+.grp>.gh{font-size:13px;font-weight:700;color:var(--ink2);margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em}
+.attrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--grey)}
+.attrow:last-child{border-bottom:0}
+.attrow .nm{flex:1;font-weight:700}
+.attrow.fehlt .nm{color:var(--ink2);text-decoration:line-through}
+.search{position:relative}
+.empty{text-align:center;padding:24px 12px;color:var(--ink2)}
+.empty p{margin:0 0 12px}
+
+/* Bewertung */
+.legend{gap:4px 10px;position:sticky;top:var(--hh,80px);z-index:10;background:var(--bg);padding:8px 0;display:flex;flex-wrap:wrap;font-size:13px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend .sw{display:inline-grid;place-items:center}
+.sw{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;font-weight:700;font-size:13px}
+.r1,.sw.r1{--on:#595959;--onT:#fff}.r2,.sw.r2{--on:var(--limeD);--onT:var(--ink)}.r3,.sw.r3{--on:var(--ink);--onT:#fff}.rp,.sw.rp{--on:var(--redD);--onT:#fff}
+.sw{background:var(--on);color:var(--onT)}
+.rrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--grey)}
+.rrow:last-child{border-bottom:0}
+.rrow .rl{flex:1;min-width:0;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}
+.rrow .rl b{display:block}
+.rate{display:flex;gap:6px}
+.r{width:46px;height:46px;border:1px solid var(--line2);border-radius:var(--r);background:var(--white);font-weight:700;font-size:18px;cursor:pointer}
+.r[aria-pressed="true"]{background:var(--on);color:var(--onT);border-color:var(--on)}
+.kidstrip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.kidstrip .chip{flex:0 0 auto;scroll-snap-align:start}
+.prog{font-size:12px;font-variant-numeric:tabular-nums;border-radius:999px;padding:1px 7px;background:var(--grey);color:var(--ink)}
+.chip[aria-pressed="true"] .prog{background:#4A4A4A;color:#fff}
+.prog.full{background:var(--lime);color:var(--ink)}
+.kidhead{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.kidhead h2{flex:1;margin:0;font-size:24px}
+.sec{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-left:4px solid var(--red);padding-left:8px;margin:20px 0 6px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.mgrid label{font-size:14px;color:var(--ink2);display:block;margin-bottom:4px}
+.kritbar{display:flex;flex-direction:column;gap:8px}
+.kritbar .chips{gap:6px}
+.kritbar .chip{min-height:40px;padding:6px 12px;font-size:15px}
+.mrow input{width:120px;min-height:44px}
+
+/* Staffeln */
+.stcard summary{justify-content:space-between}
+.stcard summary .sm{font-weight:400;color:var(--ink2);font-size:14px}
+.teamhead{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:8px 0}
+.pill{font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--grey)}
+.pill.a{background:var(--ink);color:#fff}.pill.b{background:var(--lime)}
+.seg.ta[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg.tb[aria-pressed="true"]{background:var(--lime);color:var(--ink);border-color:var(--limeD)}
+
+/* Übersicht */
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:10px 6px;border-bottom:1px solid var(--grey);text-align:left;font-variant-numeric:tabular-nums}
+th{font-size:13px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+td button.link{background:none;border:0;padding:0;font-weight:700;text-decoration:underline;cursor:pointer;min-height:32px;text-align:left}
+.warn{background:#FFF4F4;border:1px solid #F3C2C4;border-radius:var(--r);padding:10px 12px;color:var(--redD);font-size:15px;margin:10px 0}
+
+/* Navigation unten */
+nav.steps{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--white);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav.steps .in{max-width:760px;margin:0 auto;display:flex}
+nav.steps button{flex:1;min-height:var(--nav);border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--ink2);border-top:3px solid transparent;font-size:14px;position:relative}
+nav.steps button .n{font-size:12px;font-weight:700;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line2)}
+nav.steps button[aria-current="page"]{color:var(--ink);font-weight:700;border-top-color:var(--red)}
+nav.steps button[aria-current="page"] .n{background:var(--ink);color:#fff;border-color:var(--ink)}
+nav.steps .badge{position:absolute;top:6px;left:calc(50% + 10px);font-size:11px;font-weight:700;background:var(--lime);border-radius:999px;padding:0 6px;color:var(--ink)}
+
+/* Panels und Menü */
+.overlay{position:fixed;inset:0;z-index:40;background:rgba(38,38,38,.4);display:none}
+.overlay.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--white);border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));max-width:760px;margin:0 auto;display:none}
+.sheet.on{display:block}
+.sheet .btn{width:100%;justify-content:flex-start;margin-bottom:8px}
+.panel{position:fixed;inset:0;z-index:42;background:var(--bg);overflow:auto;display:none}
+.panel.on{display:block}
+.panel .phead{position:sticky;top:0;background:var(--white);border-bottom:1px solid var(--line);border-top:4px solid var(--red);padding:8px 16px;display:flex;align-items:center;gap:10px;z-index:2}
+.panel .phead h2{margin:0;flex:1}
+.panel .pin{max-width:760px;margin:0 auto;padding:16px}
+.hrow{display:flex;align-items:center;gap:10px}
+.hrow .meta{flex:1;min-width:0}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--grey);margin-left:4px}
+.tag.prep{background:var(--lime)}.tag.up{background:#E3F1E4;color:#1B5E20}.tag.cur{background:var(--ink);color:#fff}
+
+.toast{position:fixed;left:50%;bottom:calc(var(--nav) + 14px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 12px 10px 16px;border-radius:12px;display:none;z-index:50;align-items:center;gap:12px;max-width:calc(100% - 24px);box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.toast.on{display:flex}
+.toast button{background:none;border:1px solid #fff;color:#fff;border-radius:8px;min-height:36px;padding:4px 12px;font-weight:700;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:370px){.r{width:40px;height:44px}.rate{gap:4px}}
 </style>
 </head>
 <body>
-<header>
-  <h1>Laufzettel Athletik</h1>
-  <div class="sub">Westfälischer Tennis-Verband · Westfalenauswahl Ickern · Daten bleiben auf diesem Gerät, bis du sie exportierst</div>
+<header class="top">
+  <div class="topin">
+    <div class="brand">
+      <div class="eyebrow">WTV Westfalenauswahl Ickern</div>
+      <div class="sess" id="sess"></div>
+      <div class="status" id="status" role="status" aria-live="polite"><span class="dot"></span><span id="statusT"></span></div>
+    </div>
+    <button class="iconbtn" data-act="menu" aria-label="Menü öffnen" aria-haspopup="dialog">☰</button>
+  </div>
 </header>
-<main>
-  <nav class="tabs" role="tablist" aria-label="Bereiche">
-    <button role="tab" data-tab="einheit" aria-selected="true">Einheit</button>
-    <button role="tab" data-tab="kinder" aria-selected="false">Kinder bewerten</button>
-    <button role="tab" data-tab="staffeln" aria-selected="false" id="tabStaffeln">Staffeln</button>
-    <button role="tab" data-tab="gruppe" aria-selected="false">Gruppe</button>
-    <button role="tab" data-tab="verlauf" aria-selected="false">Verlauf</button>
-    <button role="tab" data-tab="setup" aria-selected="false">Kader und Sync</button>
-  </nav>
 
-  <!-- EINHEIT -->
-  <section id="einheit" role="tabpanel">
-    <div class="bar">Einheit</div>
-    <div class="grid">
-      <div><label for="f_datum">Datum</label><input id="f_datum" type="date"></div>
-      <div><label for="f_ak">Altersklasse</label><select id="f_ak"></select></div>
-      <div><label for="f_lg">LG Nr.</label><input id="f_lg" inputmode="numeric"></div>
-      <div><label for="f_trainer">Trainer</label><input id="f_trainer"></div>
-      <div><label for="f_dauer">Dauer</label><input id="f_dauer" placeholder="z. B. 90 min"></div>
-    </div>
-    <label for="f_thema">Thema</label><input id="f_thema">
-    <div class="card"><strong>Worauf heute achten</strong><ul id="fokus" class="muted"></ul></div>
-    <div class="bar">Anwesend</div>
-    <div class="row"><input id="kidFilter" placeholder="Name suchen" aria-label="Kinder filtern"><button id="btnAllJg">Nur Jahrgang der AK</button></div>
-    <p class="muted" id="kaderHint"></p>
-    <div id="kidList" class="kids"></div>
-    <div class="row" style="margin-top:10px"><input id="gastName" placeholder="Gast oder Nachrücker: Nachname, Vorname" aria-label="Kind ohne Kaderliste hinzufügen"><button id="btnGast">Hinzufügen</button></div>
-  </section>
+<main id="view" tabindex="-1"></main>
 
-  <!-- KINDER -->
-  <section id="kinder" role="tabpanel" class="hidden">
-    <div class="bar">Kinder bewerten <span style="font-weight:400;font-size:15px">(1 noch nicht, 2 teilweise, 3 sicher, + auffällig stark)</span></div>
-    <div id="kidCards"></div>
-  </section>
+<nav class="steps" aria-label="Ablauf der Einheit"><div class="in" id="steps"></div></nav>
 
-  <!-- STAFFELN -->
-  <section id="staffeln" role="tabpanel" class="hidden">
-    <div class="bar">Staffeln · Töpfe wie im DTB Talent Cup</div>
-    <div id="staffelList"></div>
-    <button id="btnStaffel" class="primary">Staffel hinzufügen</button>
-    <div class="bar">Beitrag je Kind über alle Staffeln</div>
-    <div id="staffelKids"></div>
-  </section>
-
-  <!-- GRUPPE -->
-  <section id="gruppe" role="tabpanel" class="hidden">
-    <div class="bar">Gruppe</div>
-    <label for="g_inhalte">Inhalte und Übungen</label><textarea id="g_inhalte"></textarea>
-    <label for="g_rpe">Belastung Gruppe (RPE 1 bis 10)</label><input id="g_rpe" type="number" min="1" max="10" inputmode="numeric">
-    <label for="g_stimmung">Stimmung</label><input id="g_stimmung">
-    <label for="g_bes">Absagen, Ausfälle, Besonderheiten</label><textarea id="g_bes"></textarea>
-    <label for="g_fragen">Offene Fragen und Aufträge</label><textarea id="g_fragen"></textarea>
-  </section>
-
-  <!-- VERLAUF -->
-  <section id="verlauf" role="tabpanel" class="hidden">
-    <div class="bar">Vorbereitete Einheiten</div>
-    <div class="card"><p class="muted">Von Claude mit Namen vorbereitete Lehrgänge aus dem Daten-Repo. Bereits geladene Einheiten werden nicht überschrieben.</p>
-    <div class="row"><button id="btnPrep" class="primary">Vorbereitete Einheiten laden</button></div></div>
-    <div class="bar">Gespeicherte Einheiten auf diesem Gerät</div>
-    <div id="histList"></div>
-  </section>
-
-  <!-- SETUP -->
-  <section id="setup" role="tabpanel" class="hidden">
-    <div class="bar">Kader</div>
-    <p class="muted">Namen stehen nicht im öffentlichen Code dieser Seite. Du fügst sie hier einmal ein, sie werden nur in diesem Browser gespeichert oder aus deinem privaten Daten-Repo geladen. Format je Zeile: Nachname, Vorname, Jahrgang, m oder w</p>
-    <label for="kaderText">Kaderliste</label>
-    <textarea id="kaderText" style="min-height:160px" placeholder="Fanselow, Theo, 2017, m&#10;Filina, Mia, 2017, w"></textarea>
-    <div class="row"><button id="btnKaderSave" class="primary">Kader speichern</button><button id="btnKaderLoad">Kader aus GitHub laden</button></div>
-    <div class="bar">Sync mit privatem GitHub Repo</div>
-    <p class="muted">Einheiten werden als JSON und Markdown in dein privates Repo geschrieben. Claude liest sie dort und überträgt sie in die Kinderprofile. Der Token bleibt nur in diesem Browser.</p>
-    <div class="grid">
-      <div><label for="s_repo">Repo (Besitzer/Name)</label><input id="s_repo" placeholder="paulomatic1403-bot/ickern-daten"></div>
-      <div><label for="s_branch">Branch</label><input id="s_branch" placeholder="main"></div>
-    </div>
-    <label for="s_token">Fine-grained Token (nur Contents: Read and write für dieses eine Repo)</label>
-    <input id="s_token" type="password" autocomplete="off">
-    <div class="row"><button id="btnSyncSave" class="primary">Einstellungen speichern</button><button id="btnSyncTest">Verbindung testen</button></div>
-  </section>
-</main>
-
-<div class="foot">
-  <button id="btnNeu">Neue Einheit</button>
-  <button id="btnCopy">Als Text kopieren</button>
-  <button id="btnJson">JSON laden</button>
-  <button id="btnPush" class="primary">In GitHub speichern</button>
+<div class="overlay" id="overlay" data-act="close"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetT">
+  <h2 id="sheetT">Menü</h2>
+  <button class="btn ghost" data-act="panel" data-p="verlauf">Verlauf und vorbereitete Einheiten</button>
+  <button class="btn ghost" data-act="panel" data-p="setup">Kader und GitHub Verbindung</button>
+  <button class="btn ghost" data-act="neu">Neue leere Einheit beginnen</button>
+  <button class="btn" data-act="close">Schließen</button>
 </div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<section class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panelT">
+  <div class="phead"><button class="iconbtn" data-act="close" aria-label="Zurück">←</button><h2 id="panelT" tabindex="-1"></h2></div>
+  <div class="pin" id="panelBody"></div>
+</section>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastT"></span><button id="toastB" hidden></button></div>
 
 <script>
 // ---------- Konfiguration je Altersklasse (Quellen: Sichtungsberichte Kamen 11/2026, Herbstlehrgang 2026, DTB Talent Cup Wettspielordnung und Testmanual 2025) ----------
 const PERS=["Ehrgeiz","Durchhalten","Selbstständig","Umgang mit Fehlern","Freude","Coachbar","Team"];
 const CFG={
- U9:{jg:"Jg. 2017 (2026), ab 2027 Jg. 2018",jgs:[2017,2018],staffel:true,
+ U9:{jg:"Jahrgang 2017, ab 2027 Jahrgang 2018",jgs:[2017,2018],staffel:true,
   fokus:["Allgemeine athletische Grundausbildung, Laufkoordination, Sprungschule","Richtungswechsel mit Abbremsen und Recovery Schritt","Rotationskraft über seitliche Medizinballwürfe","Vielseitigkeit ohne frühe Spezialisierung, relatives Alter mitdenken"],
   mess:["20 m [s]","RWS VH [s]","RWS RH [s]","SWS [cm]","3er-Hop [cm]","MB ÜK [cm]"],
   mot:["Laufkoordination","Sprung und Landung","Wurf und Rotation","Abbremsen","Ballgeschick"]},
- U10:{jg:"Jg. 2016 (2026), ab 2027 Jg. 2017",jgs:[2016,2017],staffel:true,
+ U10:{jg:"Jahrgang 2016, ab 2027 Jahrgang 2017",jgs:[2016,2017],staffel:true,
   fokus:["Heranführen an den DTB Talent Performance Test","Konditionswettbewerbe als Staffel aus allen vier Töpfen","Mannschaftsspiele aus dem Talent Cup, Spielfähigkeit und Teamverhalten","Körpermaße für das biologische Alter erfassen"],
   mess:["20 m [s]","RWS gesamt [s]","SWS [cm]","CMJ oder 3er-Hop","Ballwurf [km/h oder m]","MB ÜK 1 kg [cm]","Größe [cm]","Sitzgröße [cm]"],
   mot:["Antritt und Laufen","Richtungswechsel","Sprungtechnik","Wurftechnik","Spielfähigkeit"]},
- U11:{jg:"Jg. 2015 (2026), ab 2027 Jg. 2016",jgs:[2015,2016],staffel:true,
+ U11:{jg:"Jahrgang 2015, ab 2027 Jahrgang 2016",jgs:[2015,2016],staffel:true,
   fokus:["Komplette Talent Performance Test Batterie unter Wettkampfbedingungen","Jedes Kind in jeder Disziplin einsetzbar (Ersatzspielerregelung)","Wettkampf und Teamverhalten unter Druck","Körpermaße, ab 1 Jahr Abweichung früh oder spät entwickelt"],
   mess:["Tapping [Hz/n]","20 m [s]","RWS VH [s]","RWS RH [s]","CMJ [cm]","SWS [cm]","Ballwurf","MB ÜK 1 kg [cm]"],
   mot:["Schnelligkeit","Richtungswechsel","Sprung","Wurf","Spielfähigkeit"]},
- U12:{jg:"Jg. 2014 (2026), ab 2027 Jg. 2015",jgs:[2014,2015],staffel:false,
+ U12:{jg:"Jahrgang 2014, ab 2027 Jahrgang 2015",jgs:[2014,2015],staffel:false,
   fokus:["Tennisspezifische Athletik: 20 m, 5-10-5, Standweitsprung beid und einbeinig, 30-15 IFT","Abbremsen im Open Stance, Seitendifferenz dokumentieren","Technik der Grundmuster Kniebeuge, Ausfallschritt, Hüftstreckung","Wachstum im Blick behalten"],
   mess:["20 m [s]","5-10-5 R [s]","5-10-5 L [s]","SWS [cm]","SWS einbeinig R/L [cm]","30-15 IFT [km/h]","Größe [cm]"],
   mot:["Bremsen und Open Stance","Rotation","Grundmuster","Rumpf","Einbeinige Landung"]},
- U13:{jg:"Jg. 2013 (2026), ab 2027 Jg. 2014",jgs:[2013,2014],staffel:false,
+ U13:{jg:"Jahrgang 2013, ab 2027 Jahrgang 2014",jgs:[2013,2014],staffel:false,
   fokus:["Tennisspezifische Athletik plus Medizinball Vorhand, Rückhand, Überkopf","Grundkraft technisch sauber, Belastbarkeit","Wachstum und biologisches Alter beachten","Selbstständigkeit und Trainingsdisziplin"],
   mess:["20 m [s]","5-10-5 R/L [s]","SWS [cm]","MB VH/RH [cm]","MB ÜK [cm]","30-15 IFT [km/h]","Größe [cm]"],
   mot:["Bremsen und Richtungswechsel","Rotation","Grundmuster","Rumpf","Belastbarkeit"]}
@@ -173,179 +218,306 @@ const TOEPFE={"Geschicklichkeit":["Ballholen","Fang-Ziel-Werfen","Pendelstaffel 
  "Wurf":["Beidarmiges Stoßen","Seitlicher Medizinballwurf","Medizinball rückwärts über Kopf","Medizinball frontal von unten"],
  "Lauf":["Grundliniensprint","Fächerlauf 1","Fächerlauf 2","Sprint im Tennisfeld","Balltransportsprint","Biathlon","Vier-Ecken-Lauf","Achterlauf","Hole und bringe den Ball","T-Run"]};
 const ST_KRIT=["Tempo","Ausführung","Wechsel und Übergabe","Regeln","Teamgeist","Unter Druck"];
-const RATES=["1","2","3","+"];
+const SCALE=[["1","noch nicht"],["2","teilweise"],["3","sicher"],["+","auffällig stark"]];
+const TAGS=["konzentriert","abgelenkt","mutig","zurückhaltend","hilft anderen","fragt nach","gibt schnell auf","übernimmt Führung","Beschwerden gemeldet"];
+const STIMMUNG=["sehr gut","gut","gemischt","unruhig","müde"];
+const TABS=[["kinder","Kinder"],["bewerten","Bewerten"],["staffeln","Staffeln"],["abschluss","Abschluss"]];
 
-// ---------- Speicher (localStorage, mit Fallback) ----------
+// ---------- Speicher ----------
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast("Speichern im Browser nicht möglich")}}};
 let kader=store.get("ick_kader",[]);
-let sync=store.get("ick_sync",{repo:"paulomatic1403-bot/ickern-daten",branch:"main",token:""});
-let S=store.get("ick_current",null)||neu();
-let onlyJg=true;
+let sync=store.get("ick_sync",{});sync={repo:sync.repo||"paulomatic1403-bot/ickern-daten",branch:sync.branch||"main",token:sync.token||""};
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+function neu(){return{id:Date.now().toString(36),datum:today(),ak:"U10",lg:"",trainer:"",dauer:"",thema:"",angemeldet:[],anwesend:[],kinder:{},staffeln:[],staffelKinder:{},gruppe:{inhalte:"",rpe:"",stimmung:"",bes:"",fragen:""}}}
+function norm(e){const b=neu();e={...b,...e,gruppe:{...b.gruppe,...(e.gruppe||{})}};
+ ["angemeldet","anwesend","staffeln"].forEach(k=>{if(!Array.isArray(e[k]))e[k]=[]});e.kinder=e.kinder||{};e.staffelKinder=e.staffelKinder||{};if(!CFG[e.ak])e.ak="U10";return e}
+let S=norm(store.get("ick_current",null)||neu());
+const ui={tab:"kinder",mode:"kind",kid:null,krit:0,stKrit:0,openSt:-1,other:false,q:""};
+function persist(){store.set("ick_current",S);const h=store.get("ick_hist",{});h[S.id]=S;store.set("ick_hist",h)}
+function save(){S.synced=false;S.changed=Date.now();persist();head()}
 
-function neu(){return{id:Date.now().toString(36),datum:new Date().toISOString().slice(0,10),ak:"U10",lg:"",trainer:"",dauer:"",thema:"",anwesend:[],kinder:{},staffeln:[],staffelKinder:{},gruppe:{inhalte:"",rpe:"",stimmung:"",bes:"",fragen:""}}}
-function save(){store.set("ick_current",S);const h=store.get("ick_hist",{});h[S.id]=S;store.set("ick_hist",h)}
 const $=id=>document.getElementById(id);
-function toast(t){const e=$("toast");e.textContent=t;e.style.display="block";clearTimeout(e._t);e._t=setTimeout(()=>e.style.display="none",2600)}
-function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
-function kidKey(k){return k.name}
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const disp=n=>{const p=String(n).split(",").map(x=>x.trim());return p.length>1&&p[1]?p[1]+" "+p[0]:n};
+const sortN=(a,b)=>a.localeCompare(b,"de");
+const kidOf=n=>{const d=S.kinder[n]||(S.kinder[n]={mess:{},mot:{},pers:{},notiz:"",tags:[]});d.mess=d.mess||{};d.mot=d.mot||{};d.pers=d.pers||{};d.tags=d.tags||[];return d};
+const total=()=>{const c=CFG[S.ak];return c.mess.length+c.mot.length+PERS.length};
+const done=n=>{const d=S.kinder[n];if(!d)return 0;return[d.mess,d.mot,d.pers].reduce((a,o)=>a+Object.values(o||{}).filter(Boolean).length,0)};
+const crits=()=>{const c=CFG[S.ak];return[...c.mess.map(k=>({g:"mess",k,sec:"Messwerte"})),...c.mot.map(k=>({g:"mot",k,sec:"Motorik"})),...PERS.map(k=>({g:"pers",k,sec:"Persönlichkeit"}))]};
+const fmtD=d=>{try{return new Date(d+"T12:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"})}catch(e){return d}};
+const tabsFor=()=>TABS.filter(t=>t[0]!=="staffeln"||CFG[S.ak].staffel);
 
-// ---------- Tabs ----------
-document.querySelectorAll('[role=tab]').forEach(b=>b.onclick=()=>{
- document.querySelectorAll('[role=tab]').forEach(x=>x.setAttribute("aria-selected",x===b));
- document.querySelectorAll('[role=tabpanel]').forEach(p=>p.classList.toggle("hidden",p.id!==b.dataset.tab));
- render(b.dataset.tab)});
+let tT;function toast(t,act){const e=$("toast"),b=$("toastB");$("toastT").textContent=t;
+ if(act){b.hidden=false;b.textContent=act.label;b.onclick=()=>{act.fn();e.classList.remove("on")}}else b.hidden=true;
+ e.classList.add("on");clearTimeout(tT);tT=setTimeout(()=>e.classList.remove("on"),act?6000:2600)}
 
-// ---------- Einheit ----------
-const akSel=$("f_ak");Object.keys(CFG).forEach(a=>akSel.add(new Option(a+" · "+CFG[a].jg,a)));
-function bindHead(){
- [["f_datum","datum"],["f_lg","lg"],["f_trainer","trainer"],["f_dauer","dauer"],["f_thema","thema"]].forEach(([id,k])=>{$(id).value=S[k];$(id).oninput=e=>{S[k]=e.target.value;save()}});
- akSel.value=S.ak;akSel.onchange=e=>{S.ak=e.target.value;save();renderEinheit()};
- [["g_inhalte","inhalte"],["g_rpe","rpe"],["g_stimmung","stimmung"],["g_bes","bes"],["g_fragen","fragen"]].forEach(([id,k])=>{$(id).value=S.gruppe[k];$(id).oninput=e=>{S.gruppe[k]=e.target.value;save()}});
+// ---------- Kopf und Navigation ----------
+function head(){
+ $("sess").textContent=`${S.ak} · ${fmtD(S.datum)}${S.lg?" · LG "+S.lg:""}`;
+ const st=$("status");st.className="status "+(S.synced?"ok":(S.changed?"todo":""));
+ $("statusT").textContent=S.synced?"In GitHub hochgeladen "+(S.syncedAt||""):(S.changed?"Gespeichert, noch nicht hochgeladen":"Noch keine Eingaben");
+ document.documentElement.style.setProperty("--hh",document.querySelector("header.top").offsetHeight+"px");
+ const tabs=tabsFor();if(!tabs.find(t=>t[0]===ui.tab))ui.tab="kinder";
+ const badge={kinder:S.anwesend.length||"",bewerten:S.anwesend.length?S.anwesend.filter(n=>done(n)>0).length+"/"+S.anwesend.length:"",staffeln:S.staffeln.length||"",abschluss:""};
+ $("steps").innerHTML=tabs.map(([k,l],i)=>`<button data-act="tab" data-tab="${k}" ${ui.tab===k?'aria-current="page"':""}><span class="n" aria-hidden="true">${i+1}</span>${l}${badge[k]!==""?`<span class="badge">${badge[k]}</span>`:""}</button>`).join("");
 }
-function renderEinheit(){
- const c=CFG[S.ak];$("fokus").innerHTML=c.fokus.map(f=>"<li>"+esc(f)+"</li>").join("");
- $("tabStaffeln").classList.toggle("hidden",!c.staffel);
- $("btnAllJg").textContent=onlyJg?"Alle Jahrgänge zeigen":"Nur Jahrgang der AK";
- $("kaderHint").textContent=kader.length?"":"Noch kein Kader auf diesem Gerät. Unter Kader und Sync einfügen oder Kinder unten als Gast hinzufügen.";
- const q=$("kidFilter").value.toLowerCase();
- const extra=S.anwesend.filter(n=>!kader.find(k=>k.name===n)).map(n=>({name:n,jg:"",g:""}));
- const list=kader.concat(extra).filter(k=>(!onlyJg||!k.jg||c.jgs.includes(+k.jg)||S.anwesend.includes(k.name))&&k.name.toLowerCase().includes(q));
- $("kidList").innerHTML=list.map((k,i)=>`<label class="kid"><input type="checkbox" data-n="${esc(k.name)}" ${S.anwesend.includes(k.name)?"checked":""}> <span>${esc(k.name)} <span class="muted">${esc(k.jg)} ${esc(k.g)}</span></span></label>`).join("")||'<p class="muted">Keine Kinder für den Filter.</p>';
- $("kidList").querySelectorAll("input").forEach(i=>i.onchange=e=>{const n=e.target.dataset.n;
-  if(e.target.checked){if(!S.anwesend.includes(n))S.anwesend.push(n)}else S.anwesend=S.anwesend.filter(x=>x!==n);save()});
-}
-$("kidFilter").oninput=renderEinheit;
-$("btnAllJg").onclick=()=>{onlyJg=!onlyJg;renderEinheit()};
-$("btnGast").onclick=()=>{const n=$("gastName").value.trim();if(!n)return;if(!S.anwesend.includes(n))S.anwesend.push(n);$("gastName").value="";save();renderEinheit();toast(n+" hinzugefügt")};
+function go(t){ui.tab=t;render();window.scrollTo(0,0);$("view").focus({preventScroll:true})}
+function render(){head();$("view").innerHTML=({kinder:vKinder,bewerten:vBewerten,staffeln:vStaffeln,abschluss:vAbschluss}[ui.tab])()}
 
-// ---------- Bewertungsknöpfe ----------
-function rateRow(label,obj,key){
- const id="r"+Math.random().toString(36).slice(2,8);
- return `<div class="rate" role="group" aria-labelledby="${id}"><span class="lab" id="${id}">${esc(label)}</span>`+
-  RATES.map(r=>`<button type="button" aria-pressed="${obj[key]===r}" data-key="${esc(key)}" data-r="${r}" aria-label="${esc(label)} ${r}">${r}</button>`).join("")+"</div>";
-}
-function wireRates(root,obj,after){root.querySelectorAll(".rate button").forEach(b=>b.onclick=()=>{
- const k=b.dataset.key,r=b.dataset.r;obj[k]=obj[k]===r?"":r;save();
- b.parentElement.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.r===obj[k]));if(after)after()})}
+const segs=(act,cur,opts,extra="")=>`<div class="segs ${extra}">`+opts.map(([v,l])=>`<button type="button" class="seg" data-act="${act}" data-v="${esc(v)}" aria-pressed="${cur===v}">${esc(l)}</button>`).join("")+"</div>";
+const rate=(n,g,k,val,lab)=>`<div class="rate" role="group" aria-label="${esc(lab)}">`+SCALE.map(([r,t])=>`<button type="button" class="r r${r==="+"?"p":r}" data-act="rate" data-kid="${esc(n)}" data-g="${g}" data-k="${esc(k)}" data-r="${r}" aria-pressed="${val===r}" aria-label="${r}, ${t}">${r}</button>`).join("")+"</div>";
+const legend=()=>`<div class="legend" aria-label="Skala">${SCALE.map(([r,t])=>`<span><span class="sw r${r==="+"?"p":r}">${r}</span>${t}</span>`).join("")}</div>`;
+const emptyBox=(t,btn)=>`<div class="card empty"><p>${t}</p>${btn||""}</div>`;
 
-// ---------- Kinder ----------
-function renderKinder(){
- const c=CFG[S.ak],root=$("kidCards");
- if(!S.anwesend.length){root.innerHTML='<p class="muted">Erst unter Einheit die anwesenden Kinder auswählen.</p>';return}
- root.innerHTML="";
- S.anwesend.forEach(n=>{
-  const d=S.kinder[n]||(S.kinder[n]={mess:{},mot:{},pers:{},notiz:""});
-  const el=document.createElement("details");el.className="card";
-  const done=Object.values(d.mot).filter(Boolean).length+Object.values(d.pers).filter(Boolean).length;
-  el.innerHTML=`<summary><h3>${esc(n)}</h3>&nbsp;<span class="muted">${done} Bewertungen</span></summary>
-   <label>Messwerte</label><div class="grid">${c.mess.map((m,i)=>`<div><label for="m_${i}_${esc(n)}" style="font-weight:400">${esc(m)}</label><input id="m_${i}_${esc(n)}" data-m="${esc(m)}" inputmode="decimal" value="${esc(d.mess[m]||"")}"></div>`).join("")}</div>
-   <div class="bar" style="font-size:16px">Motorik</div>${c.mot.map(m=>rateRow(m,d.mot,m)).join("")}
-   <div class="bar" style="font-size:16px">Persönlichkeit</div><div class="mot">${PERS.map(p=>rateRow(p,d.pers,p)).join("")}</div>
-   <label for="n_${esc(n)}">Notiz: was fällt auf?</label><textarea id="n_${esc(n)}">${esc(d.notiz)}</textarea>`;
-  el.querySelectorAll("input[data-m]").forEach(i=>i.oninput=e=>{d.mess[e.target.dataset.m]=e.target.value;save()});
-  el.querySelector("textarea").oninput=e=>{d.notiz=e.target.value;save()};
-  const mot=el.querySelectorAll(".rate");
-  // getrennt verdrahten, damit Motorik und Persönlichkeit eigene Objekte nutzen
-  c.mot.forEach((m,i)=>wireRates({querySelectorAll:()=>mot[i].querySelectorAll("button")},d.mot));
-  PERS.forEach((p,i)=>wireRates({querySelectorAll:()=>mot[c.mot.length+i].querySelectorAll("button")},d.pers));
-  root.appendChild(el)});
-}
+// ---------- 1 Kinder ----------
+function vKinder(){
+ const c=CFG[S.ak];
+ let h=`<section class="card"><h2>Einheit</h2>
+  <div class="field"><span class="lbl" id="akl">Altersklasse</span><div role="group" aria-labelledby="akl">${segs("ak",S.ak,Object.keys(CFG).map(a=>[a,a]),"fill")}</div><p class="hint">${esc(c.jg)}</p></div>
+  <div class="grid2"><div class="field"><label class="lbl" for="f_datum">Datum</label><input id="f_datum" type="date" data-head="datum" value="${esc(S.datum)}"></div>
+  <div class="field"><label class="lbl" for="f_lg">LG Nummer</label><input id="f_lg" inputmode="numeric" data-head="lg" value="${esc(S.lg)}" placeholder="z. B. 5"></div></div>
+  <details><summary>Trainer, Dauer und Thema</summary><div class="grid2"><div class="field"><label class="lbl" for="f_tr">Trainer</label><input id="f_tr" data-head="trainer" value="${esc(S.trainer)}"></div><div class="field"><label class="lbl" for="f_du">Dauer</label><input id="f_du" data-head="dauer" value="${esc(S.dauer)}" placeholder="90 min"></div></div><div class="field"><label class="lbl" for="f_th">Thema</label><input id="f_th" data-head="thema" value="${esc(S.thema)}"></div></details>
+  <details><summary>Worauf heute achten</summary><ul class="fokus">${c.fokus.map(f=>`<li>${esc(f)}</li>`).join("")}</ul></details>
+ </section>`;
+ h+=`<section class="card"><div class="h2row"><h2>Anwesend</h2><span class="big" id="anwN" aria-label="Anzahl anwesend">${S.anwesend.length}</span></div>`;
+ if(S.angemeldet.length){
+  h+=`<h3>Angemeldet (${S.angemeldet.length})</h3><p class="hint" style="margin-top:-4px">Alle sind als da markiert. Wer fehlt, auf Fehlt tippen.</p><div id="attList">${S.angemeldet.map(attRow).join("")}</div>`;
+ }
+ h+=`<h3>${S.angemeldet.length?"Weitere Kinder":"Kinder auswählen"}</h3>
+  <div class="field search"><label class="sr" for="q">Name suchen</label><input id="q" type="search" placeholder="Name suchen" value="${esc(ui.q)}" autocomplete="off"></div>
+  <div id="pool">${pool()}</div>
+  <details style="margin-top:12px"><summary>Gast oder Nachrücker ohne Kaderliste</summary>
+   <div class="btnrow"><input id="gast" placeholder="Nachname, Vorname" aria-label="Name Gast" style="flex:2 1 200px"><button class="btn" data-act="gast">Hinzufügen</button></div></details>
+ </section>`;
+ const next=tabsFor()[1];
+ h+=`<button class="btn primary wide" data-act="tab" data-tab="bewerten" ${S.anwesend.length?"":"disabled"}>Weiter zum Bewerten</button>`;
+ return h}
+function attRow(n){const da=S.anwesend.includes(n);
+ return `<div class="attrow ${da?"":"fehlt"}"><span class="nm">${esc(disp(n))}</span><div class="segs" role="group" aria-label="${esc(disp(n))}">
+  <button class="seg ta" data-act="att" data-kid="${esc(n)}" data-v="da" aria-pressed="${da}">Da</button><button class="seg" data-act="att" data-kid="${esc(n)}" data-v="fehlt" aria-pressed="${!da}">Fehlt</button></div></div>`}
+function chip(k){const on=S.anwesend.includes(k.name);return `<button type="button" class="chip" data-act="kid" data-kid="${esc(k.name)}" aria-pressed="${on}"><span class="ck" aria-hidden="true">✓</span>${esc(disp(k.name))}${k.jg?` <small>${esc(k.jg)}</small>`:""}</button>`}
+function pool(){
+ const c=CFG[S.ak],q=ui.q.trim().toLowerCase();
+ const gaeste=S.anwesend.filter(n=>!kader.find(k=>k.name===n)&&!S.angemeldet.includes(n)).map(n=>({name:n,jg:""}));
+ if(!kader.length&&!gaeste.length)return `<div class="empty"><p>Noch kein Kader auf diesem Gerät.</p><button class="btn primary" data-act="panel" data-p="setup">Kader laden</button></div>`;
+ const list=kader.filter(k=>!S.angemeldet.includes(k.name));
+ const hit=k=>!q||k.name.toLowerCase().includes(q)||disp(k.name).toLowerCase().includes(q);
+ const by=(arr)=>arr.slice().sort((a,b)=>sortN(a.name,b.name));
+ let h="";
+ if(gaeste.length)h+=`<div class="grp"><div class="gh">Gäste</div><div class="chips">${gaeste.map(chip).join("")}</div></div>`;
+ c.jgs.forEach((jg,i)=>{const a=by(list.filter(k=>+k.jg===jg&&hit(k)));if(a.length)h+=`<div class="grp"><div class="gh">Jahrgang ${jg}${i?" · jüngere":""}</div><div class="chips">${a.map(chip).join("")}</div></div>`});
+ const rest=list.filter(k=>!c.jgs.includes(+k.jg));
+ const restOn=rest.filter(k=>S.anwesend.includes(k.name));
+ if(q){const a=by(rest.filter(hit));if(a.length)h+=`<div class="grp"><div class="gh">Andere Jahrgänge</div><div class="chips">${a.map(chip).join("")}</div></div>`}
+ else if(ui.other){[...new Set(rest.map(k=>+k.jg))].sort((a,b)=>b-a).forEach(jg=>{h+=`<div class="grp"><div class="gh">Jahrgang ${jg||"?"}</div><div class="chips">${by(rest.filter(k=>+k.jg===jg)).map(chip).join("")}</div></div>`});
+  h+=`<button class="btn ghost wide" style="margin-top:12px" data-act="other">Andere Jahrgänge ausblenden</button>`}
+ else{if(restOn.length)h+=`<div class="grp"><div class="gh">Andere Jahrgänge</div><div class="chips">${by(restOn).map(chip).join("")}</div></div>`;
+  h+=`<button class="btn ghost wide" style="margin-top:12px" data-act="other">Andere Jahrgänge zeigen (${rest.length})</button>`}
+ if(q&&!h)h=`<p class="hint">Kein Kind gefunden. Unten als Gast hinzufügen.</p>`;
+ return h}
 
-// ---------- Staffeln ----------
-function renderStaffeln(){
- const root=$("staffelList");root.innerHTML="";
- S.staffeln.forEach((st,idx)=>{
-  const el=document.createElement("div");el.className="card";
-  el.innerHTML=`<h3>Staffel ${idx+1}</h3><div class="grid">
-   <div><label for="st_t${idx}">Topf</label><select id="st_t${idx}">${Object.keys(TOEPFE).map(t=>`<option ${st.topf===t?"selected":""}>${t}</option>`).join("")}</select></div>
-   <div><label for="st_u${idx}">Übung</label><select id="st_u${idx}"></select></div>
-   <div><label for="st_a${idx}">Ergebnis Team A</label><input id="st_a${idx}" value="${esc(st.ergA)}" placeholder="Zeit oder Weite"></div>
-   <div><label for="st_b${idx}">Ergebnis Team B</label><input id="st_b${idx}" value="${esc(st.ergB)}" placeholder="Zeit oder Weite"></div>
-   <div><label for="st_s${idx}">Sieger</label><select id="st_s${idx}"><option></option><option ${st.sieger==="A"?"selected":""}>A</option><option ${st.sieger==="B"?"selected":""}>B</option><option ${st.sieger==="Unentschieden"?"selected":""}>Unentschieden</option></select></div>
-   <div><label for="st_f${idx}">Fehler und Wiederholungen</label><input id="st_f${idx}" value="${esc(st.fehler)}"></div></div>
-   <label>Team A und Team B (antippen: A, B, nicht dabei)</label><div>${S.anwesend.map(n=>`<button type="button" class="chipbtn" data-n="${esc(n)}" style="margin:3px">${esc(n)}: ${st.teams[n]||"·"}</button>`).join("")||'<span class="muted">Keine Kinder anwesend</span>'}</div>
-   <label for="st_bem${idx}">Bemerkung</label><input id="st_bem${idx}" value="${esc(st.bem)}">
-   <button type="button" style="margin-top:8px" data-del="1">Staffel löschen</button>`;
-  const fillU=()=>{const u=el.querySelector(`#st_u${idx}`);u.innerHTML=TOEPFE[st.topf].map(x=>`<option ${st.uebung===x?"selected":""}>${x}</option>`).join("");if(!TOEPFE[st.topf].includes(st.uebung))st.uebung=TOEPFE[st.topf][0]};
-  fillU();
-  el.querySelector(`#st_t${idx}`).onchange=e=>{st.topf=e.target.value;fillU();save()};
-  el.querySelector(`#st_u${idx}`).onchange=e=>{st.uebung=e.target.value;save()};
-  [["a","ergA"],["b","ergB"],["f","fehler"],["bem","bem"]].forEach(([s,k])=>el.querySelector(`#st_${s}${idx}`).oninput=e=>{st[k]=e.target.value;save()});
-  el.querySelector(`#st_s${idx}`).onchange=e=>{st.sieger=e.target.value;save()};
-  el.querySelectorAll(".chipbtn").forEach(b=>b.onclick=()=>{const n=b.dataset.n,cur=st.teams[n]||"";st.teams[n]=cur===""?"A":cur==="A"?"B":"";b.textContent=n+": "+(st.teams[n]||"·");save()});
-  el.querySelector("[data-del]").onclick=()=>{if(confirm("Staffel "+(idx+1)+" löschen?")){S.staffeln.splice(idx,1);save();renderStaffeln()}};
-  root.appendChild(el)});
- const kr=$("staffelKids");kr.innerHTML="";
- S.anwesend.forEach(n=>{
-  const d=S.staffelKinder[n]||(S.staffelKinder[n]={});
-  const ein=S.staffeln.map((st,i)=>st.teams[n]?("St. "+(i+1)+" Team "+st.teams[n]):null).filter(Boolean);
-  const el=document.createElement("details");el.className="card";
-  el.innerHTML=`<summary><h3>${esc(n)}</h3>&nbsp;<span class="muted">${ein.length?ein.join(", "):"noch in keiner Staffel"}</span></summary>${ST_KRIT.map(k=>rateRow(k,d,k)).join("")}`;
-  wireRates(el,d);kr.appendChild(el)});
-}
-$("btnStaffel").onclick=()=>{S.staffeln.push({topf:"Lauf",uebung:"Grundliniensprint",teams:{},ergA:"",ergB:"",sieger:"",fehler:"",bem:""});save();renderStaffeln()};
+// ---------- 2 Bewerten ----------
+function vBewerten(){
+ if(!S.anwesend.length)return emptyBox("Noch keine Kinder anwesend.",`<button class="btn primary" data-act="tab" data-tab="kinder">Kinder auswählen</button>`);
+ let h=`<div role="group" aria-label="Ansicht">${segs("mode",ui.mode,[["kind","Pro Kind"],["krit","Pro Station"]],"fill")}</div>
+  <p class="hint" style="margin:6px 0 4px">${ui.mode==="kind"?"Ein Kind komplett bewerten.":"Eine Station oder ein Kriterium, alle Kinder nacheinander."}</p>${legend()}`;
+ return h+(ui.mode==="kind"?vKind():vKrit())}
+function prog(n){const d=done(n),t=total();return `<span class="prog ${d>=t?"full":""}" data-prog="${esc(n)}">${d}/${t}</span>`}
+function vKind(){
+ if(!ui.kid||!S.anwesend.includes(ui.kid))ui.kid=S.anwesend[0];
+ const n=ui.kid,c=CFG[S.ak],d=kidOf(n),i=S.anwesend.indexOf(n);
+ let h=`<div class="kidstrip" role="group" aria-label="Kind wählen">${S.anwesend.map(k=>`<button class="chip" data-act="selkid" data-kid="${esc(k)}" aria-pressed="${k===n}">${esc(disp(k))} ${prog(k)}</button>`).join("")}</div>
+ <section class="card"><div class="kidhead"><button class="iconbtn" data-act="step" data-v="-1" aria-label="Vorheriges Kind" ${i?"":"disabled"}>‹</button><h2>${esc(disp(n))}</h2>${prog(n)}<button class="iconbtn" data-act="step" data-v="1" aria-label="Nächstes Kind" ${i<S.anwesend.length-1?"":"disabled"}>›</button></div>
+ <div class="sec">Messwerte</div><div class="mgrid">${c.mess.map((m,j)=>`<div><label for="m${j}">${esc(m)}</label><input id="m${j}" inputmode="decimal" data-mess="${esc(m)}" data-kid="${esc(n)}" value="${esc(d.mess[m]||"")}"></div>`).join("")}</div>
+ <div class="sec">Motorik</div>${c.mot.map(m=>`<div class="rrow"><div class="rl"><b>${esc(m)}</b></div>${rate(n,"mot",m,d.mot[m],m)}</div>`).join("")}
+ <div class="sec">Persönlichkeit</div>${PERS.map(p=>`<div class="rrow"><div class="rl"><b>${esc(p)}</b></div>${rate(n,"pers",p,d.pers[p],p)}</div>`).join("")}
+ <div class="sec">Was fällt auf?</div><div class="chips" role="group" aria-label="Schnellnotizen">${TAGS.map(t=>`<button class="chip" data-act="tag" data-kid="${esc(n)}" data-v="${esc(t)}" aria-pressed="${d.tags.includes(t)}"><span class="ck" aria-hidden="true">✓</span>${esc(t)}</button>`).join("")}</div>
+ <label class="sr" for="notiz">Notiz zu ${esc(disp(n))}</label><textarea id="notiz" style="margin-top:10px" data-notiz="1" data-kid="${esc(n)}" placeholder="Notiz zu ${esc(disp(n))}">${esc(d.notiz)}</textarea>
+ </section>`;
+ h+=i<S.anwesend.length-1?`<button class="btn primary wide" data-act="step" data-v="1">Weiter zu ${esc(disp(S.anwesend[i+1]))}</button>`:`<button class="btn primary wide" data-act="tab" data-tab="${tabsFor()[2][0]}">Alle Kinder durch, weiter</button>`;
+ return h}
+function vKrit(){
+ const cs=crits();if(ui.krit>=cs.length)ui.krit=0;const k=cs[ui.krit];
+ const secs=[...new Set(cs.map(x=>x.sec))];
+ let h=`<section class="card kritbar">${secs.map(s=>`<div><div class="gh" style="font-size:13px;font-weight:700;color:var(--ink2);text-transform:uppercase;margin:4px 0">${s}</div><div class="chips">${cs.map((x,i)=>x.sec===s?`<button class="chip" data-act="krit" data-v="${i}" aria-pressed="${i===ui.krit}">${esc(x.k)}</button>`:"").join("")}</div></div>`).join("")}</section>
+ <section class="card"><h2>${esc(k.k)}</h2>`;
+ h+=S.anwesend.map((n,j)=>{const d=kidOf(n);
+  return `<div class="rrow mrow"><div class="rl"><b>${esc(disp(n))}</b></div>${k.g==="mess"?`<label class="sr" for="km${j}">${esc(k.k)} ${esc(disp(n))}</label><input id="km${j}" inputmode="decimal" data-mess="${esc(k.k)}" data-kid="${esc(n)}" value="${esc(d.mess[k.k]||"")}">`:rate(n,k.g,k.k,d[k.g][k.k],k.k+" "+disp(n))}</div>`}).join("");
+ h+=`</section>`+(ui.krit<cs.length-1?`<button class="btn primary wide" data-act="krit" data-v="${ui.krit+1}">Weiter zu ${esc(cs[ui.krit+1].k)}</button>`:"");
+ return h}
 
-// ---------- Verlauf ----------
-function renderVerlauf(){
- const h=store.get("ick_hist",{});const list=Object.values(h).sort((a,b)=>b.datum.localeCompare(a.datum));
- $("histList").innerHTML=list.map(e=>`<div class="card row"><div><strong>${esc(e.datum)} · ${esc(e.ak)} ${e.lg?"· LG "+esc(e.lg):""}</strong><br><span class="muted">${e.anwesend.length} Kinder ${e.vorbereitet&&!e.synced?"· vorbereitet":e.synced?"· in GitHub gespeichert":"· noch nicht in GitHub"}</span></div><button data-open="${e.id}">Öffnen</button><button data-del="${e.id}">Löschen</button></div>`).join("")||'<p class="muted">Noch nichts gespeichert.</p>';
- $("histList").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S=h[b.dataset.open];store.set("ick_current",S);bindHead();document.querySelector('[data-tab=einheit]').click();toast("Einheit geöffnet")});
- $("histList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm("Diese Einheit auf dem Gerät löschen?")){delete h[b.dataset.del];store.set("ick_hist",h);renderVerlauf()}});
-}
+// ---------- 3 Staffeln ----------
+function vStaffeln(){
+ if(!S.anwesend.length)return emptyBox("Noch keine Kinder anwesend.",`<button class="btn primary" data-act="tab" data-tab="kinder">Kinder auswählen</button>`);
+ if(ui.openSt<0||ui.openSt>=S.staffeln.length)ui.openSt=S.staffeln.length-1;
+ let h=`<p class="hint" style="margin:0 0 10px">Töpfe und Übungen wie im DTB Talent Cup. Je Staffel Teams einteilen, Ergebnis und Sieger eintragen.</p>`;
+ h+=S.staffeln.map((st,i)=>stCard(st,i)).join("");
+ h+=`<button class="btn ${S.staffeln.length?"":"primary"} wide" data-act="stadd" style="margin-bottom:14px">+ Neue Staffel</button>`;
+ if(S.staffeln.length){if(ui.stKrit>=ST_KRIT.length)ui.stKrit=0;const k=ST_KRIT[ui.stKrit];
+  h+=`<section class="card"><h2>Beitrag je Kind</h2><p class="hint" style="margin-top:-6px">Über alle Staffeln. Kriterium wählen, dann alle Kinder bewerten.</p>${legend()}
+   <div class="chips" style="margin-bottom:8px">${ST_KRIT.map((x,i)=>`<button class="chip" data-act="stkrit" data-v="${i}" aria-pressed="${i===ui.stKrit}">${esc(x)}</button>`).join("")}</div>
+   ${S.anwesend.map(n=>{const d=S.staffelKinder[n]||{};const ein=S.staffeln.filter(s=>s.teams&&s.teams[n]).length;return `<div class="rrow"><div class="rl"><b>${esc(disp(n))}</b><span class="hint">${ein} von ${S.staffeln.length} Staffeln</span></div>${rate(n,"st",k,d[k],k+" "+disp(n))}</div>`}).join("")}</section>`}
+ return h}
+function stCard(st,i){st.teams=st.teams||{};const A=S.anwesend.filter(n=>st.teams[n]==="A").length,B=S.anwesend.filter(n=>st.teams[n]==="B").length;
+ return `<details class="card stcard" data-sti="${i}" ${i===ui.openSt?"open":""}><summary><span>Staffel ${i+1}</span><span class="sm">${esc(st.topf)} · ${esc(st.uebung)}${st.sieger?" · Sieger "+esc(st.sieger):""}</span></summary>
+  <div class="field"><span class="lbl">Topf</span>${segs("sttopf",st.topf,Object.keys(TOEPFE).map(t=>[t,t]),"two").replace(/data-act="sttopf"/g,`data-act="sttopf" data-si="${i}"`)}</div>
+  <div class="field"><label class="lbl" for="stu${i}">Übung</label><select id="stu${i}" data-st="uebung" data-si="${i}">${TOEPFE[st.topf].map(x=>`<option ${st.uebung===x?"selected":""}>${esc(x)}</option>`).join("")}</select></div>
+  <div class="teamhead"><span class="lbl" style="margin:0">Teams</span><span><span class="pill a">A ${A}</span> <span class="pill b">B ${B}</span></span></div>
+  <div class="btnrow" style="margin-bottom:6px">${i?`<button class="btn ghost" data-act="stcopy" data-si="${i}">Wie Staffel ${i}</button>`:""}<button class="btn ghost" data-act="strand" data-si="${i}">Zufällig teilen</button></div>
+  ${S.anwesend.map(n=>{const v=st.teams[n]||"";return `<div class="attrow"><span class="nm">${esc(disp(n))}</span><div class="segs" role="group" aria-label="Team ${esc(disp(n))}">
+   <button class="seg ta" data-act="team" data-si="${i}" data-kid="${esc(n)}" data-v="A" aria-pressed="${v==="A"}">A</button><button class="seg tb" data-act="team" data-si="${i}" data-kid="${esc(n)}" data-v="B" aria-pressed="${v==="B"}">B</button><button class="seg" data-act="team" data-si="${i}" data-kid="${esc(n)}" data-v="" aria-pressed="${v===""}" aria-label="nicht dabei">–</button></div></div>`}).join("")}
+  <div class="grid2" style="margin-top:12px"><div class="field"><label class="lbl" for="sta${i}">Ergebnis A</label><input id="sta${i}" data-st="ergA" data-si="${i}" value="${esc(st.ergA)}" placeholder="z. B. 12,4 s"></div><div class="field"><label class="lbl" for="stb${i}">Ergebnis B</label><input id="stb${i}" data-st="ergB" data-si="${i}" value="${esc(st.ergB)}" placeholder="z. B. 12,4 s"></div></div>
+  <div class="field"><span class="lbl">Sieger</span>${segs("stsieger",st.sieger,[["A","Team A"],["B","Team B"],["Unentschieden","Gleich"]],"fill").replace(/data-act="stsieger"/g,`data-act="stsieger" data-si="${i}"`)}</div>
+  <div class="field"><label class="lbl" for="stf${i}">Fehler und Wiederholungen</label><input id="stf${i}" data-st="fehler" data-si="${i}" value="${esc(st.fehler)}"></div>
+  <div class="field"><label class="lbl" for="stm${i}">Bemerkung</label><input id="stm${i}" data-st="bem" data-si="${i}" value="${esc(st.bem)}"></div>
+  <button class="btn danger" data-act="stdel" data-si="${i}">Staffel ${i+1} löschen</button></details>`}
 
-async function ladePrep(silent){
- if(!sync.repo||!sync.token){if(!silent)toast("Erst Repo und Token unter Kader und Sync eintragen");return}
- try{const r=await gh("vorbereitet");if(!r.ok){if(!silent)toast(r.status==404?"Keine vorbereiteten Einheiten":"Fehler "+r.status);return}
-  const files=(await r.json()).filter(f=>f.name.endsWith(".json"));const h=store.get("ick_hist",{});let neuN=0;
-  for(const f of files){const x=await gh("vorbereitet/"+f.name);if(!x.ok)continue;const j=await x.json();
-   const e=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));
-   if(!e.id||h[e.id])continue;const base=neu();const m={...base,...e,gruppe:{...base.gruppe,...(e.gruppe||{})},kinder:e.kinder||{},staffeln:e.staffeln||[],staffelKinder:e.staffelKinder||{}};
-   h[m.id]=m;neuN++}
-  store.set("ick_hist",h);renderVerlauf();if(!silent||neuN)toast(neuN?neuN+" vorbereitete Einheit(en) geladen":"Nichts Neues")}catch(err){if(!silent)toast("Laden fehlgeschlagen")}}
-$("btnPrep").onclick=()=>ladePrep(false);
-setTimeout(()=>ladePrep(true),800);
+// ---------- 4 Abschluss ----------
+function vAbschluss(){
+ const g=S.gruppe,c=CFG[S.ak],t=total();
+ const fehlt=S.angemeldet.filter(n=>!S.anwesend.includes(n));
+ const ohne=S.anwesend.filter(n=>!done(n));
+ let h=`<section class="card"><h2>Gruppe</h2>
+  <div class="field"><label class="lbl" for="g_in">Inhalte und Übungen</label><textarea id="g_in" data-grp="inhalte">${esc(g.inhalte)}</textarea></div>
+  <div class="field"><span class="lbl" id="rpel">Belastung der Gruppe (RPE 1 bis 10)</span><div role="group" aria-labelledby="rpel">${segs("rpe",String(g.rpe),Array.from({length:10},(_,i)=>[String(i+1),String(i+1)]),"fill")}</div></div>
+  <div class="field"><label class="lbl" for="g_st">Stimmung</label><div class="chips" style="margin-bottom:8px">${STIMMUNG.map(s=>`<button class="chip" data-act="stimm" data-v="${s}" aria-pressed="${g.stimmung===s}">${s}</button>`).join("")}</div><input id="g_st" data-grp="stimmung" value="${esc(g.stimmung)}" placeholder="oder eigene Beschreibung"></div>
+  <div class="field"><label class="lbl" for="g_be">Absagen, Ausfälle, Besonderheiten</label><textarea id="g_be" data-grp="bes">${esc(g.bes)}</textarea></div>
+  <div class="field"><label class="lbl" for="g_fr">Offene Fragen und Aufträge</label><textarea id="g_fr" data-grp="fragen">${esc(g.fragen)}</textarea></div></section>`;
+ h+=`<section class="card"><div class="h2row"><h2>Übersicht</h2><span class="hint">${S.anwesend.length} da${fehlt.length?" · "+fehlt.length+" fehlen":""}</span></div>`;
+ if(ohne.length)h+=`<div class="warn">${ohne.length===1?"1 Kind hat":ohne.length+" Kinder haben"} noch keine Bewertung: ${ohne.map(disp).map(esc).join(", ")}</div>`;
+ h+=S.anwesend.length?`<table><thead><tr><th>Kind</th><th>Werte</th><th>Notiz</th>${c.staffel?"<th>Staffeln</th>":""}</tr></thead><tbody>${S.anwesend.map(n=>{const d=S.kinder[n]||{};const nz=(d.notiz||"").trim()||(d.tags||[]).length;return `<tr><td><button class="link" data-act="gokid" data-kid="${esc(n)}">${esc(disp(n))}</button></td><td>${done(n)}/${t}</td><td>${nz?"✓":"–"}</td>${c.staffel?`<td>${S.staffeln.filter(s=>s.teams&&s.teams[n]).length}</td>`:""}</tr>`}).join("")}</tbody></table>`:`<p class="hint">Noch keine Kinder anwesend.</p>`;
+ if(fehlt.length)h+=`<p class="hint">Fehlt: ${fehlt.map(disp).map(esc).join(", ")}</p>`;
+ h+=`</section><section class="card"><h2>Speichern</h2>
+  <p class="hint" style="margin:-4px 0 12px">${S.synced?"Diese Einheit ist hochgeladen ("+esc(S.syncedAt||"")+"). Claude kann sie lesen.":"Alles ist auf diesem Gerät gespeichert. Erst nach dem Hochladen kann Claude die Einheit lesen."}</p>
+  <button class="btn primary wide" data-act="push" id="pushBtn">${S.synced?"Erneut hochladen":"In GitHub hochladen"}</button>
+  <div class="btnrow" style="margin-top:10px"><button class="btn ghost" data-act="copy">Als Text kopieren</button><button class="btn ghost" data-act="json">JSON herunterladen</button></div>
+  <button class="btn ghost wide" style="margin-top:10px" data-act="neu">Neue leere Einheit beginnen</button></section>`;
+ return h}
 
-// ---------- Kader und Sync ----------
-$("kaderText").value=kader.map(k=>[k.name,k.jg,k.g].join(", ")).join("\n");
-function parseKader(t){return t.split(/\n/).map(l=>l.trim()).filter(Boolean).map(l=>{const p=l.split(",").map(x=>x.trim());return{name:p[0]+(p[1]?", "+p[1]:""),jg:p[2]||"",g:p[3]||""}})}
-$("btnKaderSave").onclick=()=>{kader=parseKader($("kaderText").value);store.set("ick_kader",kader);toast(kader.length+" Kinder gespeichert");renderEinheit()};
-$("s_repo").value=sync.repo;$("s_branch").value=sync.branch||"main";$("s_token").value=sync.token;
-$("btnSyncSave").onclick=()=>{sync={repo:$("s_repo").value.trim(),branch:$("s_branch").value.trim()||"main",token:$("s_token").value.trim()};store.set("ick_sync",sync);toast("Sync gespeichert")};
-async function gh(path,opt={}){
- const r=await fetch(`https://api.github.com/repos/${sync.repo}/contents/${path}`+(opt.method?"":`?ref=${encodeURIComponent(sync.branch)}`),{...opt,headers:{"Authorization":"Bearer "+sync.token,"Accept":"application/vnd.github+json",...(opt.headers||{})}});
- return r}
+// ---------- Panels ----------
+function openSheet(){$("overlay").classList.add("on");$("sheet").classList.add("on");$("sheet").querySelector("button").focus()}
+function closeAll(){["overlay","sheet","panel"].forEach(i=>$(i).classList.remove("on"));document.body.style.overflow=""}
+function openPanel(p){closeAll();$("panel").classList.add("on");document.body.style.overflow="hidden";$("panelT").textContent=p==="verlauf"?"Verlauf":"Kader und GitHub";$("panel").dataset.p=p;renderPanel();$("panelT").focus()}
+function renderPanel(){const p=$("panel").dataset.p,b=$("panelBody");
+ if(p==="verlauf"){const h=store.get("ick_hist",{});const list=Object.values(h).sort((a,b)=>(b.datum||"").localeCompare(a.datum||""));
+  b.innerHTML=`<section class="card"><h2>Vorbereitete Einheiten</h2><p class="hint" style="margin:-4px 0 12px">Von Claude mit Namen vorbereitet. Schon geladene Einheiten werden nie überschrieben.</p><button class="btn primary wide" data-act="prep">Jetzt aus GitHub laden</button></section>
+  <section class="card"><h2>Auf diesem Gerät</h2>${list.map(e=>`<div class="attrow hrow"><div class="meta"><b>${esc(e.ak)} · ${esc(fmtD(e.datum))}${e.lg?" · LG "+esc(e.lg):""}</b>${e.id===S.id?'<span class="tag cur">offen</span>':""}${e.synced?'<span class="tag up">hochgeladen</span>':e.vorbereitet&&!e.changed?'<span class="tag prep">vorbereitet</span>':""}<br><span class="hint">${(e.anwesend||[]).length} Kinder${(e.angemeldet||[]).length?" von "+e.angemeldet.length+" angemeldet":""}</span></div>
+   ${e.id===S.id?"":`<button class="btn" data-act="hopen" data-id="${e.id}">Öffnen</button>`}<button class="iconbtn" data-act="hdel" data-id="${e.id}" aria-label="Einheit löschen">✕</button></div>`).join("")||'<p class="hint">Noch nichts gespeichert.</p>'}</section>`}
+ else{b.innerHTML=`<section class="card"><h2>1 GitHub Verbindung</h2><p class="hint" style="margin:-4px 0 12px">Einheiten werden in dein privates Repo geschrieben. Der Token bleibt nur in diesem Browser.</p>
+   <div class="field"><label class="lbl" for="s_repo">Repo</label><input id="s_repo" value="${esc(sync.repo)}"></div>
+   <div class="field"><label class="lbl" for="s_tok">Token</label><input id="s_tok" type="password" autocomplete="off" value="${esc(sync.token)}" placeholder="github_pat_…"><p class="hint">Fine-grained Token, nur für ickern-daten, Contents Read and write.</p></div>
+   <div class="field"><label class="lbl" for="s_br">Branch</label><input id="s_br" value="${esc(sync.branch)}"></div>
+   <div class="btnrow"><button class="btn primary" data-act="syncsave">Speichern und testen</button></div></section>
+  <section class="card"><h2>2 Kader</h2><p class="hint" style="margin:-4px 0 12px">${kader.length?kader.length+" Kinder auf diesem Gerät.":"Noch kein Kader auf diesem Gerät."} Namen stehen nie im öffentlichen Code der Seite.</p>
+   <button class="btn primary wide" data-act="kload">Kader aus GitHub laden</button>
+   <details style="margin-top:10px"><summary>Kader von Hand bearbeiten</summary><p class="hint">Je Zeile: Nachname, Vorname, Jahrgang, m oder w</p><textarea id="kText" style="min-height:200px">${esc(kader.map(k=>[k.name,k.jg,k.g].filter(x=>x!=="").join(", ")).join("\n"))}</textarea><button class="btn" style="margin-top:8px" data-act="ksave">Kader speichern</button></details></section>`}}
+
+// ---------- Aktionen ----------
+function setKid(n,on){if(on){if(!S.anwesend.includes(n))S.anwesend.push(n)}else S.anwesend=S.anwesend.filter(x=>x!==n);save();const a=$("anwN");if(a)a.textContent=S.anwesend.length}
+function updProg(n){document.querySelectorAll("[data-prog]").forEach(e=>{if(e.dataset.prog===n){const d=done(n),t=total();e.textContent=d+"/"+t;e.classList.toggle("full",d>=t)}})}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+document.addEventListener("click",async e=>{
+ const t=e.target.closest("[data-act]");if(!t||t.disabled)return;const a=t.dataset.act,n=t.dataset.kid,v=t.dataset.v,si=+t.dataset.si;
+ switch(a){
+ case "tab":closeAll();go(t.dataset.tab);break;
+ case "menu":openSheet();break;
+ case "close":closeAll();break;
+ case "panel":openPanel(t.dataset.p);break;
+ case "ak":S.ak=v;save();render();break;
+ case "kid":{const on=t.getAttribute("aria-pressed")!=="true";setKid(n,on);t.setAttribute("aria-pressed",on);break}
+ case "att":setKid(n,v==="da");t.closest(".attrow").outerHTML=attRow(n);break;
+ case "other":ui.other=!ui.other;$("pool").innerHTML=pool();break;
+ case "gast":{const g=$("gast").value.trim();if(!g)return toast("Bitte einen Namen eingeben");setKid(g,true);$("gast").value="";$("pool").innerHTML=pool();toast(disp(g)+" hinzugefügt");break}
+ case "mode":ui.mode=v;render();break;
+ case "selkid":ui.kid=n;render();break;
+ case "gokid":ui.mode="kind";ui.kid=n;go("bewerten");break;
+ case "step":{const i=S.anwesend.indexOf(ui.kid)+(+v);if(S.anwesend[i]){ui.kid=S.anwesend[i];render();window.scrollTo(0,0);const s=document.querySelector('.kidstrip [aria-pressed="true"]');if(s)s.scrollIntoView({inline:"center",block:"nearest"})}break}
+ case "krit":ui.krit=+v;render();window.scrollTo(0,0);break;
+ case "rate":{const g=t.dataset.g,k=t.dataset.k,r=t.dataset.r;const o=g==="st"?(S.staffelKinder[n]||(S.staffelKinder[n]={})):kidOf(n)[g];o[k]=o[k]===r?"":r;save();
+  t.parentElement.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.r===o[k]));if(g!=="st")updProg(n);head();break}
+ case "tag":{const d=kidOf(n);d.tags=d.tags.includes(v)?d.tags.filter(x=>x!==v):[...d.tags,v];save();t.setAttribute("aria-pressed",d.tags.includes(v));break}
+ case "stadd":{const prev=S.staffeln[S.staffeln.length-1];S.staffeln.push({topf:"Lauf",uebung:"Grundliniensprint",teams:prev?{...prev.teams}:{},ergA:"",ergB:"",sieger:"",fehler:"",bem:""});ui.openSt=S.staffeln.length-1;save();render();
+  const c=document.querySelector(`[data-sti="${ui.openSt}"]`);if(c)c.scrollIntoView({block:"start"});break}
+ case "stdel":{const st=S.staffeln.splice(si,1)[0];save();render();toast(`Staffel ${si+1} gelöscht`,{label:"Rückgängig",fn:()=>{S.staffeln.splice(si,0,st);ui.openSt=si;save();render()}});break}
+ case "sttopf":{const st=S.staffeln[si];st.topf=v;st.uebung=TOEPFE[v][0];ui.openSt=si;save();render();break}
+ case "stsieger":{const st=S.staffeln[si];st.sieger=st.sieger===v?"":v;ui.openSt=si;save();render();break}
+ case "team":{const st=S.staffeln[si];st.teams[n]=v;ui.openSt=si;save();render();break}
+ case "stcopy":S.staffeln[si].teams={...S.staffeln[si-1].teams};ui.openSt=si;save();render();toast("Teams übernommen");break;
+ case "strand":{const st=S.staffeln[si];st.teams={};shuffle(S.anwesend).forEach((k,j)=>st.teams[k]=j%2?"B":"A");ui.openSt=si;save();render();break}
+ case "stkrit":ui.stKrit=+v;render();break;
+ case "rpe":S.gruppe.rpe=S.gruppe.rpe===v?"":v;save();render();break;
+ case "stimm":S.gruppe.stimmung=S.gruppe.stimmung===v?"":v;save();render();break;
+ case "push":push(t);break;
+ case "copy":{const txt=toMarkdown(S);try{await navigator.clipboard.writeText(txt);toast("Text kopiert. Jetzt im Claude Projekt einfügen.")}catch(err){prompt("Text kopieren:",txt)}break}
+ case "json":{const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:"application/json"}));l.download=`einheit_${S.datum}_${S.ak}.json`;l.click();break}
+ case "neu":{const old=S;persist();S=neu();S.ak=old.ak;persist();closeAll();ui.kid=null;go("kinder");toast("Neue Einheit begonnen",{label:"Zurück",fn:()=>{S=old;persist();render()}});break}
+ case "hopen":{const h=store.get("ick_hist",{});S=norm(h[t.dataset.id]);ui.kid=null;persist();closeAll();go("kinder");toast("Einheit geöffnet");break}
+ case "hdel":{const h=store.get("ick_hist",{}),id=t.dataset.id,old=h[id];delete h[id];store.set("ick_hist",h);if(id===S.id){S=neu();store.set("ick_current",S)}renderPanel();render();
+  toast("Einheit vom Gerät gelöscht",{label:"Rückgängig",fn:()=>{const x=store.get("ick_hist",{});x[id]=old;store.set("ick_hist",x);renderPanel()}});break}
+ case "prep":ladePrep(false);break;
+ case "syncsave":{sync={repo:$("s_repo").value.trim(),branch:$("s_br").value.trim()||"main",token:$("s_tok").value.trim()};store.set("ick_sync",sync);
+  if(!sync.token)return toast("Token fehlt");try{const r=await fetch(`https://api.github.com/repos/${sync.repo}`,{headers:{"Authorization":"Bearer "+sync.token}});toast(r.ok?"Verbindung klappt":"GitHub meldet Fehler "+r.status+". Token und Repo prüfen.")}catch(err){toast("Keine Verbindung zum Internet")}break}
+ case "kload":{if(!sync.token)return toast("Erst den Token oben eintragen");try{const r=await gh("kader.csv");if(!r.ok)return toast("kader.csv nicht gefunden (Fehler "+r.status+")");const j=await r.json();kader=parseKader(dec(j.content));store.set("ick_kader",kader);renderPanel();toast(kader.length+" Kinder geladen")}catch(err){toast("Laden fehlgeschlagen")}break}
+ case "ksave":kader=parseKader($("kText").value);store.set("ick_kader",kader);renderPanel();toast(kader.length+" Kinder gespeichert");break;
+ }
+});
+document.addEventListener("input",e=>{const t=e.target,d=t.dataset;
+ if(t.id==="q"){ui.q=t.value;$("pool").innerHTML=pool();return}
+ if(d.head){S[d.head]=t.value;save();return}
+ if(d.grp){S.gruppe[d.grp]=t.value;save();return}
+ if(d.mess){kidOf(d.kid).mess[d.mess]=t.value.replace(",",".").trim()===""?"":t.value;save();updProg(d.kid);return}
+ if(d.notiz){kidOf(d.kid).notiz=t.value;save();return}
+ if(d.st){const st=S.staffeln[+d.si];st[d.st]=t.value;save();if(d.st==="uebung"){const s=t.closest("details").querySelector(".sm");if(s)s.textContent=st.topf+" · "+st.uebung+(st.sieger?" · Sieger "+st.sieger:"")}}
+});
+document.addEventListener("toggle",e=>{if(e.target.dataset&&e.target.dataset.sti!==undefined&&e.target.open)ui.openSt=+e.target.dataset.sti},true);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
+
+// ---------- GitHub ----------
+async function gh(path,opt={}){return fetch(`https://api.github.com/repos/${sync.repo}/contents/${path}`+(opt.method?"":`?ref=${encodeURIComponent(sync.branch)}`),{...opt,headers:{"Authorization":"Bearer "+sync.token,"Accept":"application/vnd.github+json",...(opt.headers||{})}})}
 const b64=s=>btoa(unescape(encodeURIComponent(s)));
-$("btnSyncTest").onclick=async()=>{if(!sync.repo||!sync.token)return toast("Repo und Token fehlen");try{const r=await fetch(`https://api.github.com/repos/${sync.repo}`,{headers:{"Authorization":"Bearer "+sync.token}});toast(r.ok?"Verbindung ok":"Fehler "+r.status)}catch(e){toast("Keine Verbindung")}};
-$("btnKaderLoad").onclick=async()=>{try{const r=await gh("kader.csv");if(!r.ok)return toast("kader.csv nicht gefunden ("+r.status+")");const j=await r.json();const t=decodeURIComponent(escape(atob(j.content.replace(/\n/g,""))));$("kaderText").value=t;kader=parseKader(t);store.set("ick_kader",kader);toast(kader.length+" Kinder geladen");renderEinheit()}catch(e){toast("Laden fehlgeschlagen")}};
-
-// ---------- Export ----------
-function toMarkdown(e){
- const c=CFG[e.ak];let m=`# Einheit ${e.datum} · ${e.ak}${e.lg?" · LG "+e.lg:""}\n\nTrainer: ${e.trainer} · Dauer: ${e.dauer} · Thema: ${e.thema}\nAnwesend (${e.anwesend.length}): ${e.anwesend.join(" | ")}\n\n`;
- e.anwesend.forEach(n=>{const d=e.kinder[n];if(!d)return;
-  const mess=Object.entries(d.mess).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
-  const mot=Object.entries(d.mot).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
-  const pers=Object.entries(d.pers).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
-  m+=`## ${n}\n`+(mess?`* Messwerte: ${mess}\n`:"")+(mot?`* Motorik: ${mot}\n`:"")+(pers?`* Persönlichkeit: ${pers}\n`:"")+(d.notiz?`* Notiz: ${d.notiz}\n`:"")+"\n"});
- if(e.staffeln.length){m+="## Staffeln\n";e.staffeln.forEach((s,i)=>{const A=Object.keys(s.teams).filter(k=>s.teams[k]==="A"),B=Object.keys(s.teams).filter(k=>s.teams[k]==="B");
-  m+=`* Staffel ${i+1}: ${s.topf}, ${s.uebung}. Team A (${A.join(" | ")}): ${s.ergA}. Team B (${B.join(" | ")}): ${s.ergB}. Sieger ${s.sieger}. ${s.fehler?"Fehler: "+s.fehler+". ":""}${s.bem}\n`});
-  Object.entries(e.staffelKinder).forEach(([n,d])=>{const t=Object.entries(d).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");if(t)m+=`* ${n}: ${t}\n`});m+="\n"}
- const g=e.gruppe;m+=`## Gruppe\n* Inhalte: ${g.inhalte}\n* RPE: ${g.rpe} · Stimmung: ${g.stimmung}\n* Besonderheiten: ${g.bes}\n* Offene Fragen: ${g.fragen}\n`;
- return m}
-$("btnCopy").onclick=async()=>{const t=toMarkdown(S);try{await navigator.clipboard.writeText(t);toast("Text kopiert, jetzt im Projekt einfügen")}catch(e){prompt("Text kopieren:",t)}};
-$("btnJson").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:"application/json"}));a.download=`einheit_${S.datum}_${S.ak}.json`;a.click()};
-$("btnPush").onclick=async()=>{
- if(!sync.repo||!sync.token){toast("Erst unter Kader und Sync Repo und Token eintragen");return}
+const dec=c=>decodeURIComponent(escape(atob(c.replace(/\n/g,""))));
+function parseKader(t){return t.split(/\n/).map(l=>l.trim()).filter(Boolean).map(l=>{const p=l.split(",").map(x=>x.trim());return{name:p[0]+(p[1]?", "+p[1]:""),jg:p[2]||"",g:p[3]||""}})}
+async function push(btn){
+ if(!sync.token){toast("Erst GitHub verbinden",{label:"Einrichten",fn:()=>openPanel("setup")});return}
+ btn.disabled=true;btn.textContent="Wird hochgeladen …";
  const base=`einheiten/${S.datum}_${S.ak}${S.lg?"_LG"+S.lg:""}_${S.id}`;
- try{for(const [ext,body] of [["json",JSON.stringify(S,null,1)],["md",toMarkdown(S)]]){
+ try{const snap={...S,synced:true};for(const [ext,body] of [["json",JSON.stringify(snap,null,1)],["md",toMarkdown(S)]]){
    const path=`${base}.${ext}`;let sha;const ex=await gh(path);if(ex.ok)sha=(await ex.json()).sha;
    const r=await gh(path,{method:"PUT",body:JSON.stringify({message:`Einheit ${S.datum} ${S.ak}`,content:b64(body),branch:sync.branch,...(sha?{sha}:{})})});
    if(!r.ok)throw new Error(r.status)}
-  S.synced=true;save();toast("In GitHub gespeichert")}catch(e){toast("Speichern fehlgeschlagen: "+e.message)}};
-$("btnNeu").onclick=()=>{if(confirm("Neue Einheit beginnen? Die aktuelle bleibt im Verlauf.")){S=neu();save();bindHead();renderEinheit();document.querySelector('[data-tab=einheit]').click()}};
+  S.synced=true;S.syncedAt=new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});persist();render();toast("Hochgeladen. Claude kann die Einheit jetzt lesen.")}
+ catch(err){btn.disabled=false;btn.textContent="Erneut versuchen";toast(err.message==="401"||err.message==="403"?"Token ungültig oder ohne Schreibrecht":"Hochladen fehlgeschlagen ("+err.message+"). Daten bleiben auf dem Gerät.")}}
+async function ladePrep(silent){
+ if(!sync.token){if(!silent)toast("Erst GitHub verbinden",{label:"Einrichten",fn:()=>openPanel("setup")});return}
+ try{const r=await gh("vorbereitet");if(!r.ok){if(!silent)toast(r.status==404?"Keine vorbereiteten Einheiten":"Fehler "+r.status);return}
+  const files=(await r.json()).filter(f=>f.name.endsWith(".json"));const h=store.get("ick_hist",{});const neuL=[];
+  for(const f of files){const x=await gh("vorbereitet/"+f.name);if(!x.ok)continue;const e=JSON.parse(dec((await x.json()).content));
+   if(!e.id||h[e.id])continue;const ang=e.angemeldet||e.anwesend||[];const m=norm({...e,angemeldet:[...ang],anwesend:[...(e.anwesend||ang)],vorbereitet:true});m.changed=0;h[m.id]=m;neuL.push(m)}
+  store.set("ick_hist",h);if($("panel").classList.contains("on"))renderPanel();
+  if(neuL.length){neuL.sort((a,b)=>a.datum.localeCompare(b.datum));const nx=neuL.find(x=>x.datum>=today())||neuL[neuL.length-1];
+   toast(`${neuL.length} vorbereitete Einheit${neuL.length>1?"en":""} geladen`,{label:"Öffnen",fn:()=>{S=norm(store.get("ick_hist",{})[nx.id]);persist();closeAll();go("kinder")}})}
+  else if(!silent)toast("Nichts Neues")}catch(err){if(!silent)toast("Laden fehlgeschlagen")}}
 
-function render(t){({einheit:renderEinheit,kinder:renderKinder,staffeln:renderStaffeln,verlauf:renderVerlauf}[t]||(()=>{}))()}
-bindHead();renderEinheit();
+// ---------- Export ----------
+function toMarkdown(e){
+ let m=`# Einheit ${e.datum} · ${e.ak}${e.lg?" · LG "+e.lg:""}\n\nTrainer: ${e.trainer} · Dauer: ${e.dauer} · Thema: ${e.thema}\nAnwesend (${e.anwesend.length}): ${e.anwesend.join(" | ")}\n`;
+ const fehlt=(e.angemeldet||[]).filter(n=>!e.anwesend.includes(n));if(fehlt.length)m+=`Angemeldet, aber gefehlt (${fehlt.length}): ${fehlt.join(" | ")}\n`;m+="\n";
+ const j=o=>Object.entries(o||{}).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
+ e.anwesend.forEach(n=>{const d=e.kinder[n];if(!d)return;const mess=j(d.mess),mot=j(d.mot),pers=j(d.pers),tg=(d.tags||[]).join(", ");if(!mess&&!mot&&!pers&&!tg&&!d.notiz)return;
+  m+=`## ${n}\n`+(mess?`* Messwerte: ${mess}\n`:"")+(mot?`* Motorik: ${mot}\n`:"")+(pers?`* Persönlichkeit: ${pers}\n`:"")+(tg?`* Auffällig: ${tg}\n`:"")+(d.notiz?`* Notiz: ${d.notiz}\n`:"")+"\n"});
+ if(e.staffeln.length){m+="## Staffeln\n";e.staffeln.forEach((s,i)=>{const A=Object.keys(s.teams||{}).filter(k=>s.teams[k]==="A"),B=Object.keys(s.teams||{}).filter(k=>s.teams[k]==="B");
+  m+=`* Staffel ${i+1}: ${s.topf}, ${s.uebung}. Team A (${A.join(" | ")}): ${s.ergA}. Team B (${B.join(" | ")}): ${s.ergB}. Sieger ${s.sieger}. ${s.fehler?"Fehler: "+s.fehler+". ":""}${s.bem}\n`});
+  Object.entries(e.staffelKinder).forEach(([n,d])=>{const t=j(d);if(t)m+=`* ${n}: ${t}\n`});m+="\n"}
+ const g=e.gruppe;m+=`## Gruppe\n* Inhalte: ${g.inhalte}\n* RPE: ${g.rpe} · Stimmung: ${g.stimmung}\n* Besonderheiten: ${g.bes}\n* Offene Fragen: ${g.fragen}\n`;
+ return m}
+
+// ---------- Bildschirm wach halten während der Einheit ----------
+let wl;async function wake(){try{if("wakeLock" in navigator&&document.visibilityState==="visible")wl=await navigator.wakeLock.request("screen")}catch(e){}}
+document.addEventListener("visibilitychange",wake);document.addEventListener("click",function f(){wake();document.removeEventListener("click",f)});
+
+render();setTimeout(()=>ladePrep(true),600);
 </script>
 </body>
 </html>
