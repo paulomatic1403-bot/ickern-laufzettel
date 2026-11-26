@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Laufzettel Athletik · Westfalenauswahl Ickern</title>
+<style>
+/* WTV Farben laut WTV_Uebungskatalog.xlsm */
+:root{--ink:#262626;--red:#EC1C24;--lime:#E6F3A1;--grey:#F2F2F2;--mid:#595959;--line:#BFBFBF;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Calibri,Carlito,"Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--white);font-size:17px;line-height:1.4}
+header{padding:16px 16px 8px;border-bottom:3px solid var(--red)}
+h1{font-size:26px;margin:0}
+.sub{color:var(--mid);font-size:14px;margin-top:2px}
+main{max-width:1100px;margin:0 auto;padding:12px 16px 120px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+nav.tabs button{flex:1 1 auto}
+button{font:inherit;min-height:44px;padding:8px 14px;border:1px solid var(--ink);background:var(--white);color:var(--ink);border-radius:6px;cursor:pointer}
+button.primary{background:var(--ink);color:var(--white)}
+button[aria-selected="true"],button[aria-pressed="true"]{background:var(--ink);color:var(--white)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.bar{background:var(--red);color:var(--white);font-weight:700;font-size:19px;padding:6px 10px;margin:18px 0 10px;border-radius:4px}
+label{display:block;font-weight:700;font-size:15px;margin:8px 0 4px}
+input,select,textarea{font:inherit;width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--lime);color:var(--ink)}
+textarea{min-height:80px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.card{border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0;background:var(--white)}
+.card h3{margin:0 0 6px;font-size:20px}
+.muted{color:var(--mid);font-size:14px}
+.rate{display:flex;align-items:center;gap:6px;margin:6px 0;flex-wrap:wrap}
+.rate .lab{flex:1 1 150px;font-size:15px}
+.rate button{min-width:44px;padding:6px 0}
+.kids{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+.kid{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:6px 10px;min-height:44px;background:var(--grey)}
+.kid input{width:24px;min-height:24px;height:24px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1 1 auto}
+details summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;display:none;z-index:9}
+.foot{position:fixed;left:0;right:0;bottom:0;background:var(--white);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chip{display:inline-block;border:1px solid var(--ink);border-radius:14px;padding:2px 10px;margin:2px;font-size:14px}
+.sep{border-left:3px solid var(--red);padding-left:8px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--line);padding:6px;text-align:left;font-size:15px}
+th{background:var(--ink);color:#fff}
+.hidden{display:none}
+@media print{.foot,nav.tabs,button{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Laufzettel Athletik</h1>
+  <div class="sub">Westfälischer Tennis-Verband · Westfalenauswahl Ickern · Daten bleiben auf diesem Gerät, bis du sie exportierst</div>
+</header>
+<main>
+  <nav class="tabs" role="tablist" aria-label="Bereiche">
+    <button role="tab" data-tab="einheit" aria-selected="true">Einheit</button>
+    <button role="tab" data-tab="kinder" aria-selected="false">Kinder bewerten</button>
+    <button role="tab" data-tab="staffeln" aria-selected="false" id="tabStaffeln">Staffeln</button>
+    <button role="tab" data-tab="gruppe" aria-selected="false">Gruppe</button>
+    <button role="tab" data-tab="verlauf" aria-selected="false">Verlauf</button>
+    <button role="tab" data-tab="setup" aria-selected="false">Kader und Sync</button>
+  </nav>
+
+  <!-- EINHEIT -->
+  <section id="einheit" role="tabpanel">
+    <div class="bar">Einheit</div>
+    <div class="grid">
+      <div><label for="f_datum">Datum</label><input id="f_datum" type="date"></div>
+      <div><label for="f_ak">Altersklasse</label><select id="f_ak"></select></div>
+      <div><label for="f_lg">LG Nr.</label><input id="f_lg" inputmode="numeric"></div>
+      <div><label for="f_trainer">Trainer</label><input id="f_trainer"></div>
+      <div><label for="f_dauer">Dauer</label><input id="f_dauer" placeholder="z. B. 90 min"></div>
+    </div>
+    <label for="f_thema">Thema</label><input id="f_thema">
+    <div class="card"><strong>Worauf heute achten</strong><ul id="fokus" class="muted"></ul></div>
+    <div class="bar">Anwesend</div>
+    <div class="row"><input id="kidFilter" placeholder="Name suchen" aria-label="Kinder filtern"><button id="btnAllJg">Nur Jahrgang der AK</button></div>
+    <p class="muted" id="kaderHint"></p>
+    <div id="kidList" class="kids"></div>
+    <div class="row" style="margin-top:10px"><input id="gastName" placeholder="Gast oder Nachrücker: Nachname, Vorname" aria-label="Kind ohne Kaderliste hinzufügen"><button id="btnGast">Hinzufügen</button></div>
+  </section>
+
+  <!-- KINDER -->
+  <section id="kinder" role="tabpanel" class="hidden">
+    <div class="bar">Kinder bewerten <span style="font-weight:400;font-size:15px">(1 noch nicht, 2 teilweise, 3 sicher, + auffällig stark)</span></div>
+    <div id="kidCards"></div>
+  </section>
+
+  <!-- STAFFELN -->
+  <section id="staffeln" role="tabpanel" class="hidden">
+    <div class="bar">Staffeln · Töpfe wie im DTB Talent Cup</div>
+    <div id="staffelList"></div>
+    <button id="btnStaffel" class="primary">Staffel hinzufügen</button>
+    <div class="bar">Beitrag je Kind über alle Staffeln</div>
+    <div id="staffelKids"></div>
+  </section>
+
+  <!-- GRUPPE -->
+  <section id="gruppe" role="tabpanel" class="hidden">
+    <div class="bar">Gruppe</div>
+    <label for="g_inhalte">Inhalte und Übungen</label><textarea id="g_inhalte"></textarea>
+    <label for="g_rpe">Belastung Gruppe (RPE 1 bis 10)</label><input id="g_rpe" type="number" min="1" max="10" inputmode="numeric">
+    <label for="g_stimmung">Stimmung</label><input id="g_stimmung">
+    <label for="g_bes">Absagen, Ausfälle, Besonderheiten</label><textarea id="g_bes"></textarea>
+    <label for="g_fragen">Offene Fragen und Aufträge</label><textarea id="g_fragen"></textarea>
+  </section>
+
+  <!-- VERLAUF -->
+  <section id="verlauf" role="tabpanel" class="hidden">
+    <div class="bar">Gespeicherte Einheiten auf diesem Gerät</div>
+    <div id="histList"></div>
+  </section>
+
+  <!-- SETUP -->
+  <section id="setup" role="tabpanel" class="hidden">
+    <div class="bar">Kader</div>
+    <p class="muted">Namen stehen nicht im öffentlichen Code dieser Seite. Du fügst sie hier einmal ein, sie werden nur in diesem Browser gespeichert oder aus deinem privaten Daten-Repo geladen. Format je Zeile: Nachname, Vorname, Jahrgang, m oder w</p>
+    <label for="kaderText">Kaderliste</label>
+    <textarea id="kaderText" style="min-height:160px" placeholder="Fanselow, Theo, 2017, m&#10;Filina, Mia, 2017, w"></textarea>
+    <div class="row"><button id="btnKaderSave" class="primary">Kader speichern</button><button id="btnKaderLoad">Kader aus GitHub laden</button></div>
+    <div class="bar">Sync mit privatem GitHub Repo</div>
+    <p class="muted">Einheiten werden als JSON und Markdown in dein privates Repo geschrieben. Claude liest sie dort und überträgt sie in die Kinderprofile. Der Token bleibt nur in diesem Browser.</p>
+    <div class="grid">
+      <div><label for="s_repo">Repo (Besitzer/Name)</label><input id="s_repo" placeholder="paulomatic1403-bot/ickern-daten"></div>
+      <div><label for="s_branch">Branch</label><input id="s_branch" placeholder="main"></div>
+    </div>
+    <label for="s_token">Fine-grained Token (nur Contents: Read and write für dieses eine Repo)</label>
+    <input id="s_token" type="password" autocomplete="off">
+    <div class="row"><button id="btnSyncSave" class="primary">Einstellungen speichern</button><button id="btnSyncTest">Verbindung testen</button></div>
+  </section>
+</main>
+
+<div class="foot">
+  <button id="btnNeu">Neue Einheit</button>
+  <button id="btnCopy">Als Text kopieren</button>
+  <button id="btnJson">JSON laden</button>
+  <button id="btnPush" class="primary">In GitHub speichern</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// ---------- Konfiguration je Altersklasse (Quellen: Sichtungsberichte Kamen 11/2026, Herbstlehrgang 2026, DTB Talent Cup Wettspielordnung und Testmanual 2025) ----------
+const PERS=["Ehrgeiz","Durchhalten","Selbstständig","Umgang mit Fehlern","Freude","Coachbar","Team"];
+const CFG={
+ U9:{jg:"Jg. 2017 (2026), ab 2027 Jg. 2018",jgs:[2017,2018],staffel:true,
+  fokus:["Allgemeine athletische Grundausbildung, Laufkoordination, Sprungschule","Richtungswechsel mit Abbremsen und Recovery Schritt","Rotationskraft über seitliche Medizinballwürfe","Vielseitigkeit ohne frühe Spezialisierung, relatives Alter mitdenken"],
+  mess:["20 m [s]","RWS VH [s]","RWS RH [s]","SWS [cm]","3er-Hop [cm]","MB ÜK [cm]"],
+  mot:["Laufkoordination","Sprung und Landung","Wurf und Rotation","Abbremsen","Ballgeschick"]},
+ U10:{jg:"Jg. 2016 (2026), ab 2027 Jg. 2017",jgs:[2016,2017],staffel:true,
+  fokus:["Heranführen an den DTB Talent Performance Test","Konditionswettbewerbe als Staffel aus allen vier Töpfen","Mannschaftsspiele aus dem Talent Cup, Spielfähigkeit und Teamverhalten","Körpermaße für das biologische Alter erfassen"],
+  mess:["20 m [s]","RWS gesamt [s]","SWS [cm]","CMJ oder 3er-Hop","Ballwurf [km/h oder m]","MB ÜK 1 kg [cm]","Größe [cm]","Sitzgröße [cm]"],
+  mot:["Antritt und Laufen","Richtungswechsel","Sprungtechnik","Wurftechnik","Spielfähigkeit"]},
+ U11:{jg:"Jg. 2015 (2026), ab 2027 Jg. 2016",jgs:[2015,2016],staffel:true,
+  fokus:["Komplette Talent Performance Test Batterie unter Wettkampfbedingungen","Jedes Kind in jeder Disziplin einsetzbar (Ersatzspielerregelung)","Wettkampf und Teamverhalten unter Druck","Körpermaße, ab 1 Jahr Abweichung früh oder spät entwickelt"],
+  mess:["Tapping [Hz/n]","20 m [s]","RWS VH [s]","RWS RH [s]","CMJ [cm]","SWS [cm]","Ballwurf","MB ÜK 1 kg [cm]"],
+  mot:["Schnelligkeit","Richtungswechsel","Sprung","Wurf","Spielfähigkeit"]},
+ U12:{jg:"Jg. 2014 (2026), ab 2027 Jg. 2015",jgs:[2014,2015],staffel:false,
+  fokus:["Tennisspezifische Athletik: 20 m, 5-10-5, Standweitsprung beid und einbeinig, 30-15 IFT","Abbremsen im Open Stance, Seitendifferenz dokumentieren","Technik der Grundmuster Kniebeuge, Ausfallschritt, Hüftstreckung","Wachstum im Blick behalten"],
+  mess:["20 m [s]","5-10-5 R [s]","5-10-5 L [s]","SWS [cm]","SWS einbeinig R/L [cm]","30-15 IFT [km/h]","Größe [cm]"],
+  mot:["Bremsen und Open Stance","Rotation","Grundmuster","Rumpf","Einbeinige Landung"]},
+ U13:{jg:"Jg. 2013 (2026), ab 2027 Jg. 2014",jgs:[2013,2014],staffel:false,
+  fokus:["Tennisspezifische Athletik plus Medizinball Vorhand, Rückhand, Überkopf","Grundkraft technisch sauber, Belastbarkeit","Wachstum und biologisches Alter beachten","Selbstständigkeit und Trainingsdisziplin"],
+  mess:["20 m [s]","5-10-5 R/L [s]","SWS [cm]","MB VH/RH [cm]","MB ÜK [cm]","30-15 IFT [km/h]","Größe [cm]"],
+  mot:["Bremsen und Richtungswechsel","Rotation","Grundmuster","Rumpf","Belastbarkeit"]}
+};
+const TOEPFE={"Geschicklichkeit":["Ballholen","Fang-Ziel-Werfen","Pendelstaffel 1","Pendelstaffel 2","Ball rollen","Koordinationsslalom","Prellslalom","Hürden/Eimer-Lauf","Dribbel-Achter-Lauf"],
+ "Sprung":["Dreisprung","Sprung einbeinig","Wechselsprünge Staffel"],
+ "Wurf":["Beidarmiges Stoßen","Seitlicher Medizinballwurf","Medizinball rückwärts über Kopf","Medizinball frontal von unten"],
+ "Lauf":["Grundliniensprint","Fächerlauf 1","Fächerlauf 2","Sprint im Tennisfeld","Balltransportsprint","Biathlon","Vier-Ecken-Lauf","Achterlauf","Hole und bringe den Ball","T-Run"]};
+const ST_KRIT=["Tempo","Ausführung","Wechsel und Übergabe","Regeln","Teamgeist","Unter Druck"];
+const RATES=["1","2","3","+"];
+
+// ---------- Speicher (localStorage, mit Fallback) ----------
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+ set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast("Speichern im Browser nicht möglich")}}};
+let kader=store.get("ick_kader",[]);
+let sync=store.get("ick_sync",{repo:"paulomatic1403-bot/ickern-daten",branch:"main",token:""});
+let S=store.get("ick_current",null)||neu();
+let onlyJg=true;
+
+function neu(){return{id:Date.now().toString(36),datum:new Date().toISOString().slice(0,10),ak:"U10",lg:"",trainer:"",dauer:"",thema:"",anwesend:[],kinder:{},staffeln:[],staffelKinder:{},gruppe:{inhalte:"",rpe:"",stimmung:"",bes:"",fragen:""}}}
+function save(){store.set("ick_current",S);const h=store.get("ick_hist",{});h[S.id]=S;store.set("ick_hist",h)}
+const $=id=>document.getElementById(id);
+function toast(t){const e=$("toast");e.textContent=t;e.style.display="block";clearTimeout(e._t);e._t=setTimeout(()=>e.style.display="none",2600)}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function kidKey(k){return k.name}
+
+// ---------- Tabs ----------
+document.querySelectorAll('[role=tab]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('[role=tab]').forEach(x=>x.setAttribute("aria-selected",x===b));
+ document.querySelectorAll('[role=tabpanel]').forEach(p=>p.classList.toggle("hidden",p.id!==b.dataset.tab));
+ render(b.dataset.tab)});
+
+// ---------- Einheit ----------
+const akSel=$("f_ak");Object.keys(CFG).forEach(a=>akSel.add(new Option(a+" · "+CFG[a].jg,a)));
+function bindHead(){
+ [["f_datum","datum"],["f_lg","lg"],["f_trainer","trainer"],["f_dauer","dauer"],["f_thema","thema"]].forEach(([id,k])=>{$(id).value=S[k];$(id).oninput=e=>{S[k]=e.target.value;save()}});
+ akSel.value=S.ak;akSel.onchange=e=>{S.ak=e.target.value;save();renderEinheit()};
+ [["g_inhalte","inhalte"],["g_rpe","rpe"],["g_stimmung","stimmung"],["g_bes","bes"],["g_fragen","fragen"]].forEach(([id,k])=>{$(id).value=S.gruppe[k];$(id).oninput=e=>{S.gruppe[k]=e.target.value;save()}});
+}
+function renderEinheit(){
+ const c=CFG[S.ak];$("fokus").innerHTML=c.fokus.map(f=>"<li>"+esc(f)+"</li>").join("");
+ $("tabStaffeln").classList.toggle("hidden",!c.staffel);
+ $("btnAllJg").textContent=onlyJg?"Alle Jahrgänge zeigen":"Nur Jahrgang der AK";
+ $("kaderHint").textContent=kader.length?"":"Noch kein Kader auf diesem Gerät. Unter Kader und Sync einfügen oder Kinder unten als Gast hinzufügen.";
+ const q=$("kidFilter").value.toLowerCase();
+ const extra=S.anwesend.filter(n=>!kader.find(k=>k.name===n)).map(n=>({name:n,jg:"",g:""}));
+ const list=kader.concat(extra).filter(k=>(!onlyJg||!k.jg||c.jgs.includes(+k.jg)||S.anwesend.includes(k.name))&&k.name.toLowerCase().includes(q));
+ $("kidList").innerHTML=list.map((k,i)=>`<label class="kid"><input type="checkbox" data-n="${esc(k.name)}" ${S.anwesend.includes(k.name)?"checked":""}> <span>${esc(k.name)} <span class="muted">${esc(k.jg)} ${esc(k.g)}</span></span></label>`).join("")||'<p class="muted">Keine Kinder für den Filter.</p>';
+ $("kidList").querySelectorAll("input").forEach(i=>i.onchange=e=>{const n=e.target.dataset.n;
+  if(e.target.checked){if(!S.anwesend.includes(n))S.anwesend.push(n)}else S.anwesend=S.anwesend.filter(x=>x!==n);save()});
+}
+$("kidFilter").oninput=renderEinheit;
+$("btnAllJg").onclick=()=>{onlyJg=!onlyJg;renderEinheit()};
+$("btnGast").onclick=()=>{const n=$("gastName").value.trim();if(!n)return;if(!S.anwesend.includes(n))S.anwesend.push(n);$("gastName").value="";save();renderEinheit();toast(n+" hinzugefügt")};
+
+// ---------- Bewertungsknöpfe ----------
+function rateRow(label,obj,key){
+ const id="r"+Math.random().toString(36).slice(2,8);
+ return `<div class="rate" role="group" aria-labelledby="${id}"><span class="lab" id="${id}">${esc(label)}</span>`+
+  RATES.map(r=>`<button type="button" aria-pressed="${obj[key]===r}" data-key="${esc(key)}" data-r="${r}" aria-label="${esc(label)} ${r}">${r}</button>`).join("")+"</div>";
+}
+function wireRates(root,obj,after){root.querySelectorAll(".rate button").forEach(b=>b.onclick=()=>{
+ const k=b.dataset.key,r=b.dataset.r;obj[k]=obj[k]===r?"":r;save();
+ b.parentElement.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.r===obj[k]));if(after)after()})}
+
+// ---------- Kinder ----------
+function renderKinder(){
+ const c=CFG[S.ak],root=$("kidCards");
+ if(!S.anwesend.length){root.innerHTML='<p class="muted">Erst unter Einheit die anwesenden Kinder auswählen.</p>';return}
+ root.innerHTML="";
+ S.anwesend.forEach(n=>{
+  const d=S.kinder[n]||(S.kinder[n]={mess:{},mot:{},pers:{},notiz:""});
+  const el=document.createElement("details");el.className="card";
+  const done=Object.values(d.mot).filter(Boolean).length+Object.values(d.pers).filter(Boolean).length;
+  el.innerHTML=`<summary><h3>${esc(n)}</h3>&nbsp;<span class="muted">${done} Bewertungen</span></summary>
+   <label>Messwerte</label><div class="grid">${c.mess.map((m,i)=>`<div><label for="m_${i}_${esc(n)}" style="font-weight:400">${esc(m)}</label><input id="m_${i}_${esc(n)}" data-m="${esc(m)}" inputmode="decimal" value="${esc(d.mess[m]||"")}"></div>`).join("")}</div>
+   <div class="bar" style="font-size:16px">Motorik</div>${c.mot.map(m=>rateRow(m,d.mot,m)).join("")}
+   <div class="bar" style="font-size:16px">Persönlichkeit</div><div class="mot">${PERS.map(p=>rateRow(p,d.pers,p)).join("")}</div>
+   <label for="n_${esc(n)}">Notiz: was fällt auf?</label><textarea id="n_${esc(n)}">${esc(d.notiz)}</textarea>`;
+  el.querySelectorAll("input[data-m]").forEach(i=>i.oninput=e=>{d.mess[e.target.dataset.m]=e.target.value;save()});
+  el.querySelector("textarea").oninput=e=>{d.notiz=e.target.value;save()};
+  const mot=el.querySelectorAll(".rate");
+  // getrennt verdrahten, damit Motorik und Persönlichkeit eigene Objekte nutzen
+  c.mot.forEach((m,i)=>wireRates({querySelectorAll:()=>mot[i].querySelectorAll("button")},d.mot));
+  PERS.forEach((p,i)=>wireRates({querySelectorAll:()=>mot[c.mot.length+i].querySelectorAll("button")},d.pers));
+  root.appendChild(el)});
+}
+
+// ---------- Staffeln ----------
+function renderStaffeln(){
+ const root=$("staffelList");root.innerHTML="";
+ S.staffeln.forEach((st,idx)=>{
+  const el=document.createElement("div");el.className="card";
+  el.innerHTML=`<h3>Staffel ${idx+1}</h3><div class="grid">
+   <div><label for="st_t${idx}">Topf</label><select id="st_t${idx}">${Object.keys(TOEPFE).map(t=>`<option ${st.topf===t?"selected":""}>${t}</option>`).join("")}</select></div>
+   <div><label for="st_u${idx}">Übung</label><select id="st_u${idx}"></select></div>
+   <div><label for="st_a${idx}">Ergebnis Team A</label><input id="st_a${idx}" value="${esc(st.ergA)}" placeholder="Zeit oder Weite"></div>
+   <div><label for="st_b${idx}">Ergebnis Team B</label><input id="st_b${idx}" value="${esc(st.ergB)}" placeholder="Zeit oder Weite"></div>
+   <div><label for="st_s${idx}">Sieger</label><select id="st_s${idx}"><option></option><option ${st.sieger==="A"?"selected":""}>A</option><option ${st.sieger==="B"?"selected":""}>B</option><option ${st.sieger==="Unentschieden"?"selected":""}>Unentschieden</option></select></div>
+   <div><label for="st_f${idx}">Fehler und Wiederholungen</label><input id="st_f${idx}" value="${esc(st.fehler)}"></div></div>
+   <label>Team A und Team B (antippen: A, B, nicht dabei)</label><div>${S.anwesend.map(n=>`<button type="button" class="chipbtn" data-n="${esc(n)}" style="margin:3px">${esc(n)}: ${st.teams[n]||"·"}</button>`).join("")||'<span class="muted">Keine Kinder anwesend</span>'}</div>
+   <label for="st_bem${idx}">Bemerkung</label><input id="st_bem${idx}" value="${esc(st.bem)}">
+   <button type="button" style="margin-top:8px" data-del="1">Staffel löschen</button>`;
+  const fillU=()=>{const u=el.querySelector(`#st_u${idx}`);u.innerHTML=TOEPFE[st.topf].map(x=>`<option ${st.uebung===x?"selected":""}>${x}</option>`).join("");if(!TOEPFE[st.topf].includes(st.uebung))st.uebung=TOEPFE[st.topf][0]};
+  fillU();
+  el.querySelector(`#st_t${idx}`).onchange=e=>{st.topf=e.target.value;fillU();save()};
+  el.querySelector(`#st_u${idx}`).onchange=e=>{st.uebung=e.target.value;save()};
+  [["a","ergA"],["b","ergB"],["f","fehler"],["bem","bem"]].forEach(([s,k])=>el.querySelector(`#st_${s}${idx}`).oninput=e=>{st[k]=e.target.value;save()});
+  el.querySelector(`#st_s${idx}`).onchange=e=>{st.sieger=e.target.value;save()};
+  el.querySelectorAll(".chipbtn").forEach(b=>b.onclick=()=>{const n=b.dataset.n,cur=st.teams[n]||"";st.teams[n]=cur===""?"A":cur==="A"?"B":"";b.textContent=n+": "+(st.teams[n]||"·");save()});
+  el.querySelector("[data-del]").onclick=()=>{if(confirm("Staffel "+(idx+1)+" löschen?")){S.staffeln.splice(idx,1);save();renderStaffeln()}};
+  root.appendChild(el)});
+ const kr=$("staffelKids");kr.innerHTML="";
+ S.anwesend.forEach(n=>{
+  const d=S.staffelKinder[n]||(S.staffelKinder[n]={});
+  const ein=S.staffeln.map((st,i)=>st.teams[n]?("St. "+(i+1)+" Team "+st.teams[n]):null).filter(Boolean);
+  const el=document.createElement("details");el.className="card";
+  el.innerHTML=`<summary><h3>${esc(n)}</h3>&nbsp;<span class="muted">${ein.length?ein.join(", "):"noch in keiner Staffel"}</span></summary>${ST_KRIT.map(k=>rateRow(k,d,k)).join("")}`;
+  wireRates(el,d);kr.appendChild(el)});
+}
+$("btnStaffel").onclick=()=>{S.staffeln.push({topf:"Lauf",uebung:"Grundliniensprint",teams:{},ergA:"",ergB:"",sieger:"",fehler:"",bem:""});save();renderStaffeln()};
+
+// ---------- Verlauf ----------
+function renderVerlauf(){
+ const h=store.get("ick_hist",{});const list=Object.values(h).sort((a,b)=>b.datum.localeCompare(a.datum));
+ $("histList").innerHTML=list.map(e=>`<div class="card row"><div><strong>${esc(e.datum)} · ${esc(e.ak)} ${e.lg?"· LG "+esc(e.lg):""}</strong><br><span class="muted">${e.anwesend.length} Kinder ${e.synced?"· in GitHub gespeichert":"· noch nicht in GitHub"}</span></div><button data-open="${e.id}">Öffnen</button><button data-del="${e.id}">Löschen</button></div>`).join("")||'<p class="muted">Noch nichts gespeichert.</p>';
+ $("histList").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S=h[b.dataset.open];store.set("ick_current",S);bindHead();document.querySelector('[data-tab=einheit]').click();toast("Einheit geöffnet")});
+ $("histList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm("Diese Einheit auf dem Gerät löschen?")){delete h[b.dataset.del];store.set("ick_hist",h);renderVerlauf()}});
+}
+
+// ---------- Kader und Sync ----------
+$("kaderText").value=kader.map(k=>[k.name,k.jg,k.g].join(", ")).join("\n");
+function parseKader(t){return t.split(/\n/).map(l=>l.trim()).filter(Boolean).map(l=>{const p=l.split(",").map(x=>x.trim());return{name:p[0]+(p[1]?", "+p[1]:""),jg:p[2]||"",g:p[3]||""}})}
+$("btnKaderSave").onclick=()=>{kader=parseKader($("kaderText").value);store.set("ick_kader",kader);toast(kader.length+" Kinder gespeichert");renderEinheit()};
+$("s_repo").value=sync.repo;$("s_branch").value=sync.branch||"main";$("s_token").value=sync.token;
+$("btnSyncSave").onclick=()=>{sync={repo:$("s_repo").value.trim(),branch:$("s_branch").value.trim()||"main",token:$("s_token").value.trim()};store.set("ick_sync",sync);toast("Sync gespeichert")};
+async function gh(path,opt={}){
+ const r=await fetch(`https://api.github.com/repos/${sync.repo}/contents/${path}`+(opt.method?"":`?ref=${encodeURIComponent(sync.branch)}`),{...opt,headers:{"Authorization":"Bearer "+sync.token,"Accept":"application/vnd.github+json",...(opt.headers||{})}});
+ return r}
+const b64=s=>btoa(unescape(encodeURIComponent(s)));
+$("btnSyncTest").onclick=async()=>{if(!sync.repo||!sync.token)return toast("Repo und Token fehlen");try{const r=await fetch(`https://api.github.com/repos/${sync.repo}`,{headers:{"Authorization":"Bearer "+sync.token}});toast(r.ok?"Verbindung ok":"Fehler "+r.status)}catch(e){toast("Keine Verbindung")}};
+$("btnKaderLoad").onclick=async()=>{try{const r=await gh("kader.csv");if(!r.ok)return toast("kader.csv nicht gefunden ("+r.status+")");const j=await r.json();const t=decodeURIComponent(escape(atob(j.content.replace(/\n/g,""))));$("kaderText").value=t;kader=parseKader(t);store.set("ick_kader",kader);toast(kader.length+" Kinder geladen");renderEinheit()}catch(e){toast("Laden fehlgeschlagen")}};
+
+// ---------- Export ----------
+function toMarkdown(e){
+ const c=CFG[e.ak];let m=`# Einheit ${e.datum} · ${e.ak}${e.lg?" · LG "+e.lg:""}\n\nTrainer: ${e.trainer} · Dauer: ${e.dauer} · Thema: ${e.thema}\nAnwesend (${e.anwesend.length}): ${e.anwesend.join(" | ")}\n\n`;
+ e.anwesend.forEach(n=>{const d=e.kinder[n];if(!d)return;
+  const mess=Object.entries(d.mess).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
+  const mot=Object.entries(d.mot).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
+  const pers=Object.entries(d.pers).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
+  m+=`## ${n}\n`+(mess?`* Messwerte: ${mess}\n`:"")+(mot?`* Motorik: ${mot}\n`:"")+(pers?`* Persönlichkeit: ${pers}\n`:"")+(d.notiz?`* Notiz: ${d.notiz}\n`:"")+"\n"});
+ if(e.staffeln.length){m+="## Staffeln\n";e.staffeln.forEach((s,i)=>{const A=Object.keys(s.teams).filter(k=>s.teams[k]==="A"),B=Object.keys(s.teams).filter(k=>s.teams[k]==="B");
+  m+=`* Staffel ${i+1}: ${s.topf}, ${s.uebung}. Team A (${A.join(" | ")}): ${s.ergA}. Team B (${B.join(" | ")}): ${s.ergB}. Sieger ${s.sieger}. ${s.fehler?"Fehler: "+s.fehler+". ":""}${s.bem}\n`});
+  Object.entries(e.staffelKinder).forEach(([n,d])=>{const t=Object.entries(d).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");if(t)m+=`* ${n}: ${t}\n`});m+="\n"}
+ const g=e.gruppe;m+=`## Gruppe\n* Inhalte: ${g.inhalte}\n* RPE: ${g.rpe} · Stimmung: ${g.stimmung}\n* Besonderheiten: ${g.bes}\n* Offene Fragen: ${g.fragen}\n`;
+ return m}
+$("btnCopy").onclick=async()=>{const t=toMarkdown(S);try{await navigator.clipboard.writeText(t);toast("Text kopiert, jetzt im Projekt einfügen")}catch(e){prompt("Text kopieren:",t)}};
+$("btnJson").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:"application/json"}));a.download=`einheit_${S.datum}_${S.ak}.json`;a.click()};
+$("btnPush").onclick=async()=>{
+ if(!sync.repo||!sync.token){toast("Erst unter Kader und Sync Repo und Token eintragen");return}
+ const base=`einheiten/${S.datum}_${S.ak}${S.lg?"_LG"+S.lg:""}_${S.id}`;
+ try{for(const [ext,body] of [["json",JSON.stringify(S,null,1)],["md",toMarkdown(S)]]){
+   const path=`${base}.${ext}`;let sha;const ex=await gh(path);if(ex.ok)sha=(await ex.json()).sha;
+   const r=await gh(path,{method:"PUT",body:JSON.stringify({message:`Einheit ${S.datum} ${S.ak}`,content:b64(body),branch:sync.branch,...(sha?{sha}:{})})});
+   if(!r.ok)throw new Error(r.status)}
+  S.synced=true;save();toast("In GitHub gespeichert")}catch(e){toast("Speichern fehlgeschlagen: "+e.message)}};
+$("btnNeu").onclick=()=>{if(confirm("Neue Einheit beginnen? Die aktuelle bleibt im Verlauf.")){S=neu();save();bindHead();renderEinheit();document.querySelector('[data-tab=einheit]').click()}};
+
+function render(t){({einheit:renderEinheit,kinder:renderKinder,staffeln:renderStaffeln,verlauf:renderVerlauf}[t]||(()=>{}))()}
+bindHead();renderEinheit();
+</script>
+</body>
+</html>
