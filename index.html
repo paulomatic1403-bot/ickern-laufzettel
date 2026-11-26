@@ -231,7 +231,7 @@ let sync=store.get("ick_sync",{});sync={repo:sync.repo||"paulomatic1403-bot/icke
 const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
 function neu(){return{id:Date.now().toString(36),datum:today(),ak:"U10",lg:"",trainer:"",dauer:"",thema:"",angemeldet:[],anwesend:[],kinder:{},staffeln:[],staffelKinder:{},gruppe:{inhalte:"",rpe:"",stimmung:"",bes:"",fragen:""}}}
 function norm(e){const b=neu();e={...b,...e,gruppe:{...b.gruppe,...(e.gruppe||{})}};
- ["angemeldet","anwesend","staffeln","offen","abgesagt"].forEach(k=>{if(!Array.isArray(e[k]))e[k]=[]});e.kinder=e.kinder||{};e.staffelKinder=e.staffelKinder||{};if(!CFG[e.ak])e.ak="U10";return e}
+ ["angemeldet","anwesend","staffeln","offen","abgesagt"].forEach(k=>{if(!Array.isArray(e[k]))e[k]=[]});e.gruppen=e.gruppen||{};e.gf=e.gf||"";e.kinder=e.kinder||{};e.staffelKinder=e.staffelKinder||{};if(!CFG[e.ak])e.ak="U10";return e}
 let S=norm(store.get("ick_current",null)||neu());
 const ui={tab:"kinder",mode:"kind",kid:null,krit:0,stKrit:0,openSt:-1,other:false,q:""};
 function persist(){store.set("ick_current",S);const h=store.get("ick_hist",{});h[S.id]=S;store.set("ick_hist",h)}
@@ -246,6 +246,10 @@ const total=()=>{const c=CFG[S.ak];return c.mess.length+c.mot.length+PERS.length
 const done=n=>{const d=S.kinder[n];if(!d)return 0;return[d.mess,d.mot,d.pers].reduce((a,o)=>a+Object.values(o||{}).filter(Boolean).length,0)};
 const crits=()=>{const c=CFG[S.ak];return[...c.mess.map(k=>({g:"mess",k,sec:"Messwerte"})),...c.mot.map(k=>({g:"mot",k,sec:"Motorik"})),...PERS.map(k=>({g:"pers",k,sec:"Persönlichkeit"}))]};
 const fmtD=d=>{try{return new Date(d+"T12:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"})}catch(e){return d}};
+const grpOf=n=>S.gruppen[n]||"";
+const hasGrp=()=>S.anwesend.some(n=>grpOf(n));
+const AL=()=>S.gf&&hasGrp()?S.anwesend.filter(n=>grpOf(n)===S.gf||!grpOf(n)):S.anwesend;
+const fmtS=d=>{try{return new Date(d+"T12:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})}catch(e){return d}};
 const tabsFor=()=>TABS.filter(t=>t[0]!=="staffeln"||CFG[S.ak].staffel);
 
 let tT;function toast(t,act){const e=$("toast"),b=$("toastB");$("toastT").textContent=t;
@@ -254,7 +258,7 @@ let tT;function toast(t,act){const e=$("toast"),b=$("toastB");$("toastT").textCo
 
 // ---------- Kopf und Navigation ----------
 function head(){
- $("sess").textContent=`${S.ak} · ${fmtD(S.datum)}${S.lg?" · LG "+S.lg:""}`;
+ $("sess").textContent=`${S.ak} · ${fmtS(S.datum)}${S.lg?" · LG "+S.lg:""}${S.gf&&hasGrp()?" · Gr. "+S.gf:""}`;
  const st=$("status");st.className="status "+(S.synced?"ok":(S.changed?"todo":""));
  $("statusT").textContent=S.synced?"In GitHub hochgeladen "+(S.syncedAt||""):(S.changed?"Gespeichert, noch nicht hochgeladen":"Noch keine Eingaben");
  document.documentElement.style.setProperty("--hh",document.querySelector("header.top").offsetHeight+"px");
@@ -293,7 +297,7 @@ function vKinder(){
   <details style="margin-top:12px"><summary>Gast oder Nachrücker ohne Kaderliste</summary>
    <div class="btnrow"><input id="gast" placeholder="Nachname, Vorname" aria-label="Name Gast" style="flex:2 1 200px"><button class="btn" data-act="gast">Hinzufügen</button></div></details>
  </section>`;
- const next=tabsFor()[1];
+ if(S.anwesend.length>1)h+=vGruppen();
  h+=`<button class="btn primary wide" data-act="tab" data-tab="bewerten" ${S.anwesend.length?"":"disabled"}>Weiter zum Bewerten</button>`;
  return h}
 function attRow(n){const da=S.anwesend.includes(n);
@@ -320,32 +324,42 @@ function pool(){
  if(q&&!h)h=`<p class="hint">Kein Kind gefunden. Unten als Gast hinzufügen.</p>`;
  return h}
 
+function vGruppen(){
+ const cnt=g=>S.anwesend.filter(n=>grpOf(n)===g).length,ohne=S.anwesend.filter(n=>!grpOf(n)).length;
+ return `<section class="card"><div class="h2row"><h2>Gruppen A und B</h2><span><span class="pill a">A ${cnt("A")}</span> <span class="pill b">B ${cnt("B")}</span></span></div>
+  <p class="hint" style="margin:-4px 0 10px">Optional. Danach kannst du beim Bewerten und bei den Staffeln nur eine Gruppe anzeigen.${ohne&&hasGrp()?" Noch ohne Gruppe: "+ohne:""}</p>
+  <div class="btnrow" style="margin-bottom:6px"><button class="btn ghost" data-act="grprand">Zufällig teilen</button><button class="btn ghost" data-act="grpmw">Jungs A, Mädchen B</button>${hasGrp()?`<button class="btn ghost" data-act="grpclear">Aufheben</button>`:""}</div>
+  ${S.anwesend.map(n=>{const v=grpOf(n);return `<div class="attrow"><span class="nm">${esc(disp(n))}</span><div class="segs" role="group" aria-label="Gruppe ${esc(disp(n))}"><button class="seg ta" data-act="grp" data-kid="${esc(n)}" data-v="A" aria-pressed="${v==="A"}">A</button><button class="seg tb" data-act="grp" data-kid="${esc(n)}" data-v="B" aria-pressed="${v==="B"}">B</button></div></div>`}).join("")}</section>`}
+function gfBar(){if(!hasGrp())return "";const c=g=>S.anwesend.filter(n=>grpOf(n)===g).length;
+ return `<div role="group" aria-label="Gruppe anzeigen" style="margin-bottom:10px">${segs("gf",S.gf,[["","Alle "+S.anwesend.length],["A","Gruppe A · "+c("A")],["B","Gruppe B · "+c("B")]],"fill")}</div>`}
+
 // ---------- 2 Bewerten ----------
 function vBewerten(){
  if(!S.anwesend.length)return emptyBox("Noch keine Kinder anwesend.",`<button class="btn primary" data-act="tab" data-tab="kinder">Kinder auswählen</button>`);
- let h=`<div role="group" aria-label="Ansicht">${segs("mode",ui.mode,[["kind","Pro Kind"],["krit","Pro Station"]],"fill")}</div>
+ let h=gfBar()+`<div role="group" aria-label="Ansicht">${segs("mode",ui.mode,[["kind","Pro Kind"],["krit","Pro Station"]],"fill")}</div>
   <p class="hint" style="margin:6px 0 4px">${ui.mode==="kind"?"Ein Kind komplett bewerten.":"Eine Station oder ein Kriterium, alle Kinder nacheinander."}</p>${legend()}`;
  return h+(ui.mode==="kind"?vKind():vKrit())}
 function prog(n){const d=done(n),t=total();return `<span class="prog ${d>=t?"full":""}" data-prog="${esc(n)}">${d}/${t}</span>`}
 function vKind(){
- if(!ui.kid||!S.anwesend.includes(ui.kid))ui.kid=S.anwesend[0];
- const n=ui.kid,c=CFG[S.ak],d=kidOf(n),i=S.anwesend.indexOf(n);
- let h=`<div class="kidstrip" role="group" aria-label="Kind wählen">${S.anwesend.map(k=>`<button class="chip" data-act="selkid" data-kid="${esc(k)}" aria-pressed="${k===n}">${esc(disp(k))} ${prog(k)}</button>`).join("")}</div>
- <section class="card"><div class="kidhead"><button class="iconbtn" data-act="step" data-v="-1" aria-label="Vorheriges Kind" ${i?"":"disabled"}>‹</button><h2>${esc(disp(n))}</h2>${prog(n)}<button class="iconbtn" data-act="step" data-v="1" aria-label="Nächstes Kind" ${i<S.anwesend.length-1?"":"disabled"}>›</button></div>
+ if(!AL().length)return emptyBox("In dieser Gruppe ist noch kein Kind.");
+ if(!ui.kid||!AL().includes(ui.kid))ui.kid=AL()[0];
+ const n=ui.kid,c=CFG[S.ak],d=kidOf(n),i=AL().indexOf(n);
+ let h=`<div class="kidstrip" role="group" aria-label="Kind wählen">${AL().map(k=>`<button class="chip" data-act="selkid" data-kid="${esc(k)}" aria-pressed="${k===n}">${esc(disp(k))} ${prog(k)}</button>`).join("")}</div>
+ <section class="card"><div class="kidhead"><button class="iconbtn" data-act="step" data-v="-1" aria-label="Vorheriges Kind" ${i?"":"disabled"}>‹</button><h2>${esc(disp(n))}</h2>${prog(n)}<button class="iconbtn" data-act="step" data-v="1" aria-label="Nächstes Kind" ${i<AL().length-1?"":"disabled"}>›</button></div>
  <div class="sec">Messwerte</div><div class="mgrid">${c.mess.map((m,j)=>`<div><label for="m${j}">${esc(m)}</label><input id="m${j}" inputmode="decimal" data-mess="${esc(m)}" data-kid="${esc(n)}" value="${esc(d.mess[m]||"")}"></div>`).join("")}</div>
  <div class="sec">Motorik</div>${c.mot.map(m=>`<div class="rrow"><div class="rl"><b>${esc(m)}</b></div>${rate(n,"mot",m,d.mot[m],m)}</div>`).join("")}
  <div class="sec">Persönlichkeit</div>${PERS.map(p=>`<div class="rrow"><div class="rl"><b>${esc(p)}</b></div>${rate(n,"pers",p,d.pers[p],p)}</div>`).join("")}
  <div class="sec">Was fällt auf?</div><div class="chips" role="group" aria-label="Schnellnotizen">${TAGS.map(t=>`<button class="chip" data-act="tag" data-kid="${esc(n)}" data-v="${esc(t)}" aria-pressed="${d.tags.includes(t)}"><span class="ck" aria-hidden="true">✓</span>${esc(t)}</button>`).join("")}</div>
  <label class="sr" for="notiz">Notiz zu ${esc(disp(n))}</label><textarea id="notiz" style="margin-top:10px" data-notiz="1" data-kid="${esc(n)}" placeholder="Notiz zu ${esc(disp(n))}">${esc(d.notiz)}</textarea>
  </section>`;
- h+=i<S.anwesend.length-1?`<button class="btn primary wide" data-act="step" data-v="1">Weiter zu ${esc(disp(S.anwesend[i+1]))}</button>`:`<button class="btn primary wide" data-act="tab" data-tab="${tabsFor()[2][0]}">Alle Kinder durch, weiter</button>`;
+ h+=i<AL().length-1?`<button class="btn primary wide" data-act="step" data-v="1">Weiter zu ${esc(disp(AL()[i+1]))}</button>`:`<button class="btn primary wide" data-act="tab" data-tab="${tabsFor()[2][0]}">Alle Kinder durch, weiter</button>`;
  return h}
 function vKrit(){
  const cs=crits();if(ui.krit>=cs.length)ui.krit=0;const k=cs[ui.krit];
  const secs=[...new Set(cs.map(x=>x.sec))];
  let h=`<section class="card kritbar">${secs.map(s=>`<div><div class="gh" style="font-size:13px;font-weight:700;color:var(--ink2);text-transform:uppercase;margin:4px 0">${s}</div><div class="chips">${cs.map((x,i)=>x.sec===s?`<button class="chip" data-act="krit" data-v="${i}" aria-pressed="${i===ui.krit}">${esc(x.k)}</button>`:"").join("")}</div></div>`).join("")}</section>
  <section class="card"><h2>${esc(k.k)}</h2>`;
- h+=S.anwesend.map((n,j)=>{const d=kidOf(n);
+ h+=AL().map((n,j)=>{const d=kidOf(n);
   return `<div class="rrow mrow"><div class="rl"><b>${esc(disp(n))}</b></div>${k.g==="mess"?`<label class="sr" for="km${j}">${esc(k.k)} ${esc(disp(n))}</label><input id="km${j}" inputmode="decimal" data-mess="${esc(k.k)}" data-kid="${esc(n)}" value="${esc(d.mess[k.k]||"")}">`:rate(n,k.g,k.k,d[k.g][k.k],k.k+" "+disp(n))}</div>`}).join("");
  h+=`</section>`+(ui.krit<cs.length-1?`<button class="btn primary wide" data-act="krit" data-v="${ui.krit+1}">Weiter zu ${esc(cs[ui.krit+1].k)}</button>`:"");
  return h}
@@ -354,21 +368,21 @@ function vKrit(){
 function vStaffeln(){
  if(!S.anwesend.length)return emptyBox("Noch keine Kinder anwesend.",`<button class="btn primary" data-act="tab" data-tab="kinder">Kinder auswählen</button>`);
  if(ui.openSt<0||ui.openSt>=S.staffeln.length)ui.openSt=S.staffeln.length-1;
- let h=`<p class="hint" style="margin:0 0 10px">Töpfe und Übungen wie im DTB Talent Cup. Je Staffel Teams einteilen, Ergebnis und Sieger eintragen.</p>`;
+ let h=gfBar()+`<p class="hint" style="margin:0 0 10px">Töpfe und Übungen wie im DTB Talent Cup. Je Staffel Teams einteilen, Ergebnis und Sieger eintragen.</p>`;
  h+=S.staffeln.map((st,i)=>stCard(st,i)).join("");
  h+=`<button class="btn ${S.staffeln.length?"":"primary"} wide" data-act="stadd" style="margin-bottom:14px">+ Neue Staffel</button>`;
  if(S.staffeln.length){if(ui.stKrit>=ST_KRIT.length)ui.stKrit=0;const k=ST_KRIT[ui.stKrit];
   h+=`<section class="card"><h2>Beitrag je Kind</h2><p class="hint" style="margin-top:-6px">Über alle Staffeln. Kriterium wählen, dann alle Kinder bewerten.</p>${legend()}
    <div class="chips" style="margin-bottom:8px">${ST_KRIT.map((x,i)=>`<button class="chip" data-act="stkrit" data-v="${i}" aria-pressed="${i===ui.stKrit}">${esc(x)}</button>`).join("")}</div>
-   ${S.anwesend.map(n=>{const d=S.staffelKinder[n]||{};const ein=S.staffeln.filter(s=>s.teams&&s.teams[n]).length;return `<div class="rrow"><div class="rl"><b>${esc(disp(n))}</b><span class="hint">${ein} von ${S.staffeln.length} Staffeln</span></div>${rate(n,"st",k,d[k],k+" "+disp(n))}</div>`}).join("")}</section>`}
+   ${AL().map(n=>{const d=S.staffelKinder[n]||{};const ein=S.staffeln.filter(s=>s.teams&&s.teams[n]).length;return `<div class="rrow"><div class="rl"><b>${esc(disp(n))}</b><span class="hint">${ein} von ${S.staffeln.length} Staffeln</span></div>${rate(n,"st",k,d[k],k+" "+disp(n))}</div>`}).join("")}</section>`}
  return h}
-function stCard(st,i){st.teams=st.teams||{};const A=S.anwesend.filter(n=>st.teams[n]==="A").length,B=S.anwesend.filter(n=>st.teams[n]==="B").length;
+function stCard(st,i){st.teams=st.teams||{};const A=AL().filter(n=>st.teams[n]==="A").length,B=AL().filter(n=>st.teams[n]==="B").length;
  return `<details class="card stcard" data-sti="${i}" ${i===ui.openSt?"open":""}><summary><span>Staffel ${i+1}</span><span class="sm">${esc(st.topf)} · ${esc(st.uebung)}${st.sieger?" · Sieger "+esc(st.sieger):""}</span></summary>
   <div class="field"><span class="lbl">Topf</span>${segs("sttopf",st.topf,Object.keys(TOEPFE).map(t=>[t,t]),"two").replace(/data-act="sttopf"/g,`data-act="sttopf" data-si="${i}"`)}</div>
   <div class="field"><label class="lbl" for="stu${i}">Übung</label><select id="stu${i}" data-st="uebung" data-si="${i}">${TOEPFE[st.topf].map(x=>`<option ${st.uebung===x?"selected":""}>${esc(x)}</option>`).join("")}</select></div>
   <div class="teamhead"><span class="lbl" style="margin:0">Teams</span><span><span class="pill a">A ${A}</span> <span class="pill b">B ${B}</span></span></div>
   <div class="btnrow" style="margin-bottom:6px">${i?`<button class="btn ghost" data-act="stcopy" data-si="${i}">Wie Staffel ${i}</button>`:""}<button class="btn ghost" data-act="strand" data-si="${i}">Zufällig teilen</button></div>
-  ${S.anwesend.map(n=>{const v=st.teams[n]||"";return `<div class="attrow"><span class="nm">${esc(disp(n))}</span><div class="segs" role="group" aria-label="Team ${esc(disp(n))}">
+  ${AL().map(n=>{const v=st.teams[n]||"";return `<div class="attrow"><span class="nm">${esc(disp(n))}</span><div class="segs" role="group" aria-label="Team ${esc(disp(n))}">
    <button class="seg ta" data-act="team" data-si="${i}" data-kid="${esc(n)}" data-v="A" aria-pressed="${v==="A"}">A</button><button class="seg tb" data-act="team" data-si="${i}" data-kid="${esc(n)}" data-v="B" aria-pressed="${v==="B"}">B</button><button class="seg" data-act="team" data-si="${i}" data-kid="${esc(n)}" data-v="" aria-pressed="${v===""}" aria-label="nicht dabei">–</button></div></div>`}).join("")}
   <div class="grid2" style="margin-top:12px"><div class="field"><label class="lbl" for="sta${i}">Ergebnis A</label><input id="sta${i}" data-st="ergA" data-si="${i}" value="${esc(st.ergA)}" placeholder="z. B. 12,4 s"></div><div class="field"><label class="lbl" for="stb${i}">Ergebnis B</label><input id="stb${i}" data-st="ergB" data-si="${i}" value="${esc(st.ergB)}" placeholder="z. B. 12,4 s"></div></div>
   <div class="field"><span class="lbl">Sieger</span>${segs("stsieger",st.sieger,[["A","Team A"],["B","Team B"],["Unentschieden","Gleich"]],"fill").replace(/data-act="stsieger"/g,`data-act="stsieger" data-si="${i}"`)}</div>
@@ -389,7 +403,7 @@ function vAbschluss(){
   <div class="field"><label class="lbl" for="g_fr">Offene Fragen und Aufträge</label><textarea id="g_fr" data-grp="fragen">${esc(g.fragen)}</textarea></div></section>`;
  h+=`<section class="card"><div class="h2row"><h2>Übersicht</h2><span class="hint">${S.anwesend.length} da${fehlt.length?" · "+fehlt.length+" fehlen":""}</span></div>`;
  if(ohne.length)h+=`<div class="warn">${ohne.length===1?"1 Kind hat":ohne.length+" Kinder haben"} noch keine Bewertung: ${ohne.map(disp).map(esc).join(", ")}</div>`;
- h+=S.anwesend.length?`<table><thead><tr><th>Kind</th><th>Werte</th><th>Notiz</th>${c.staffel?"<th>Staffeln</th>":""}</tr></thead><tbody>${S.anwesend.map(n=>{const d=S.kinder[n]||{};const nz=(d.notiz||"").trim()||(d.tags||[]).length;return `<tr><td><button class="link" data-act="gokid" data-kid="${esc(n)}">${esc(disp(n))}</button></td><td>${done(n)}/${t}</td><td>${nz?"✓":"–"}</td>${c.staffel?`<td>${S.staffeln.filter(s=>s.teams&&s.teams[n]).length}</td>`:""}</tr>`}).join("")}</tbody></table>`:`<p class="hint">Noch keine Kinder anwesend.</p>`;
+ h+=S.anwesend.length?`<table><thead><tr><th>Kind</th>${hasGrp()?"<th>Gr.</th>":""}<th>Werte</th><th>Notiz</th>${c.staffel?"<th>Staffeln</th>":""}</tr></thead><tbody>${S.anwesend.map(n=>{const d=S.kinder[n]||{};const nz=(d.notiz||"").trim()||(d.tags||[]).length;return `<tr><td><button class="link" data-act="gokid" data-kid="${esc(n)}">${esc(disp(n))}</button></td>${hasGrp()?`<td>${grpOf(n)||"–"}</td>`:""}<td>${done(n)}/${t}</td><td>${nz?"✓":"–"}</td>${c.staffel?`<td>${S.staffeln.filter(s=>s.teams&&s.teams[n]).length}</td>`:""}</tr>`}).join("")}</tbody></table>`:`<p class="hint">Noch keine Kinder anwesend.</p>`;
  if(fehlt.length)h+=`<p class="hint">Fehlt: ${fehlt.map(disp).map(esc).join(", ")}</p>`;
  h+=`</section><section class="card"><h2>Speichern</h2>
   <p class="hint" style="margin:-4px 0 12px">${S.synced?"Diese Einheit ist hochgeladen ("+esc(S.syncedAt||"")+"). Claude kann sie lesen.":"Alles ist auf diesem Gerät gespeichert. Erst nach dem Hochladen kann Claude die Einheit lesen."}</p>
@@ -434,9 +448,14 @@ document.addEventListener("click",async e=>{
  case "other":ui.other=!ui.other;$("pool").innerHTML=pool();break;
  case "gast":{const g=$("gast").value.trim();if(!g)return toast("Bitte einen Namen eingeben");setKid(g,true);$("gast").value="";$("pool").innerHTML=pool();toast(disp(g)+" hinzugefügt");break}
  case "mode":ui.mode=v;render();break;
+ case "grp":S.gruppen[n]=grpOf(n)===v?"":v;save();render();break;
+ case "grprand":S.gruppen={};shuffle(S.anwesend).forEach((k,j)=>S.gruppen[k]=j%2?"B":"A");save();render();break;
+ case "grpmw":{const gg=n=>(kader.find(k=>k.name===n)||{}).g;S.anwesend.forEach(k=>{const x=gg(k);S.gruppen[k]=x==="m"?"A":x==="w"?"B":(S.gruppen[k]||"")});save();render();if(S.anwesend.some(k=>!gg(k)))toast("Bei Gästen ohne Angabe bitte von Hand wählen");break}
+ case "grpclear":{const old={...S.gruppen},og=S.gf;S.gruppen={};S.gf="";save();render();toast("Gruppen aufgehoben",{label:"Rückgängig",fn:()=>{S.gruppen=old;S.gf=og;save();render()}});break}
+ case "gf":S.gf=v;ui.kid=null;save();render();break;
  case "selkid":ui.kid=n;render();break;
  case "gokid":ui.mode="kind";ui.kid=n;go("bewerten");break;
- case "step":{const i=S.anwesend.indexOf(ui.kid)+(+v);if(S.anwesend[i]){ui.kid=S.anwesend[i];render();window.scrollTo(0,0);const s=document.querySelector('.kidstrip [aria-pressed="true"]');if(s)s.scrollIntoView({inline:"center",block:"nearest"})}break}
+ case "step":{const i=AL().indexOf(ui.kid)+(+v);if(AL()[i]){ui.kid=AL()[i];render();window.scrollTo(0,0);const s=document.querySelector('.kidstrip [aria-pressed="true"]');if(s)s.scrollIntoView({inline:"center",block:"nearest"})}break}
  case "krit":ui.krit=+v;render();window.scrollTo(0,0);break;
  case "rate":{const g=t.dataset.g,k=t.dataset.k,r=t.dataset.r;const o=g==="st"?(S.staffelKinder[n]||(S.staffelKinder[n]={})):kidOf(n)[g];o[k]=o[k]===r?"":r;save();
   t.parentElement.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.r===o[k]));if(g!=="st")updProg(n);head();break}
@@ -448,7 +467,7 @@ document.addEventListener("click",async e=>{
  case "stsieger":{const st=S.staffeln[si];st.sieger=st.sieger===v?"":v;ui.openSt=si;save();render();break}
  case "team":{const st=S.staffeln[si];st.teams[n]=v;ui.openSt=si;save();render();break}
  case "stcopy":S.staffeln[si].teams={...S.staffeln[si-1].teams};ui.openSt=si;save();render();toast("Teams übernommen");break;
- case "strand":{const st=S.staffeln[si];st.teams={};shuffle(S.anwesend).forEach((k,j)=>st.teams[k]=j%2?"B":"A");ui.openSt=si;save();render();break}
+ case "strand":{const st=S.staffeln[si];st.teams={};shuffle(AL()).forEach((k,j)=>st.teams[k]=j%2?"B":"A");ui.openSt=si;save();render();break}
  case "stkrit":ui.stKrit=+v;render();break;
  case "rpe":S.gruppe.rpe=S.gruppe.rpe===v?"":v;save();render();break;
  case "stimm":S.gruppe.stimmung=S.gruppe.stimmung===v?"":v;save();render();break;
@@ -506,10 +525,10 @@ async function ladePrep(silent){
 // ---------- Export ----------
 function toMarkdown(e){
  let m=`# Einheit ${e.datum} · ${e.ak}${e.lg?" · LG "+e.lg:""}\n\nTrainer: ${e.trainer} · Dauer: ${e.dauer} · Thema: ${e.thema}\nAnwesend (${e.anwesend.length}): ${e.anwesend.join(" | ")}\n`;
- const fehlt=(e.angemeldet||[]).filter(n=>!e.anwesend.includes(n));if(fehlt.length)m+=`Angemeldet, aber gefehlt (${fehlt.length}): ${fehlt.join(" | ")}\n`;const of=(e.offen||[]).filter(n=>!e.anwesend.includes(n));if(of.length)m+=`Antwort offen, nicht gekommen (${of.length}): ${of.join(" | ")}\n`;if((e.abgesagt||[]).length)m+=`Abgesagt (${e.abgesagt.length}): ${e.abgesagt.join(" | ")}\n`;m+="\n";
+ const fehlt=(e.angemeldet||[]).filter(n=>!e.anwesend.includes(n));if(fehlt.length)m+=`Angemeldet, aber gefehlt (${fehlt.length}): ${fehlt.join(" | ")}\n`;const of=(e.offen||[]).filter(n=>!e.anwesend.includes(n));if(of.length)m+=`Antwort offen, nicht gekommen (${of.length}): ${of.join(" | ")}\n`;if((e.abgesagt||[]).length)m+=`Abgesagt (${e.abgesagt.length}): ${e.abgesagt.join(" | ")}\n`;const gr=e.gruppen||{};["A","B"].forEach(g=>{const l=e.anwesend.filter(n=>gr[n]===g);if(l.length)m+=`Gruppe ${g} (${l.length}): ${l.join(" | ")}\n`});m+="\n";
  const j=o=>Object.entries(o||{}).filter(([k,v])=>v).map(([k,v])=>k+" "+v).join(", ");
  e.anwesend.forEach(n=>{const d=e.kinder[n];if(!d)return;const mess=j(d.mess),mot=j(d.mot),pers=j(d.pers),tg=(d.tags||[]).join(", ");if(!mess&&!mot&&!pers&&!tg&&!d.notiz)return;
-  m+=`## ${n}\n`+(mess?`* Messwerte: ${mess}\n`:"")+(mot?`* Motorik: ${mot}\n`:"")+(pers?`* Persönlichkeit: ${pers}\n`:"")+(tg?`* Auffällig: ${tg}\n`:"")+(d.notiz?`* Notiz: ${d.notiz}\n`:"")+"\n"});
+  m+=`## ${n}${(e.gruppen||{})[n]?" (Gruppe "+e.gruppen[n]+")":""}\n`+(mess?`* Messwerte: ${mess}\n`:"")+(mot?`* Motorik: ${mot}\n`:"")+(pers?`* Persönlichkeit: ${pers}\n`:"")+(tg?`* Auffällig: ${tg}\n`:"")+(d.notiz?`* Notiz: ${d.notiz}\n`:"")+"\n"});
  if(e.staffeln.length){m+="## Staffeln\n";e.staffeln.forEach((s,i)=>{const A=Object.keys(s.teams||{}).filter(k=>s.teams[k]==="A"),B=Object.keys(s.teams||{}).filter(k=>s.teams[k]==="B");
   m+=`* Staffel ${i+1}: ${s.topf}, ${s.uebung}. Team A (${A.join(" | ")}): ${s.ergA}. Team B (${B.join(" | ")}): ${s.ergB}. Sieger ${s.sieger}. ${s.fehler?"Fehler: "+s.fehler+". ":""}${s.bem}\n`});
   Object.entries(e.staffelKinder).forEach(([n,d])=>{const t=j(d);if(t)m+=`* ${n}: ${t}\n`});m+="\n"}
