@@ -109,6 +109,9 @@ th{background:var(--ink);color:#fff}
 
   <!-- VERLAUF -->
   <section id="verlauf" role="tabpanel" class="hidden">
+    <div class="bar">Vorbereitete Einheiten</div>
+    <div class="card"><p class="muted">Von Claude mit Namen vorbereitete Lehrgänge aus dem Daten-Repo. Bereits geladene Einheiten werden nicht überschrieben.</p>
+    <div class="row"><button id="btnPrep" class="primary">Vorbereitete Einheiten laden</button></div></div>
     <div class="bar">Gespeicherte Einheiten auf diesem Gerät</div>
     <div id="histList"></div>
   </section>
@@ -286,10 +289,22 @@ $("btnStaffel").onclick=()=>{S.staffeln.push({topf:"Lauf",uebung:"Grundlinienspr
 // ---------- Verlauf ----------
 function renderVerlauf(){
  const h=store.get("ick_hist",{});const list=Object.values(h).sort((a,b)=>b.datum.localeCompare(a.datum));
- $("histList").innerHTML=list.map(e=>`<div class="card row"><div><strong>${esc(e.datum)} · ${esc(e.ak)} ${e.lg?"· LG "+esc(e.lg):""}</strong><br><span class="muted">${e.anwesend.length} Kinder ${e.synced?"· in GitHub gespeichert":"· noch nicht in GitHub"}</span></div><button data-open="${e.id}">Öffnen</button><button data-del="${e.id}">Löschen</button></div>`).join("")||'<p class="muted">Noch nichts gespeichert.</p>';
+ $("histList").innerHTML=list.map(e=>`<div class="card row"><div><strong>${esc(e.datum)} · ${esc(e.ak)} ${e.lg?"· LG "+esc(e.lg):""}</strong><br><span class="muted">${e.anwesend.length} Kinder ${e.vorbereitet&&!e.synced?"· vorbereitet":e.synced?"· in GitHub gespeichert":"· noch nicht in GitHub"}</span></div><button data-open="${e.id}">Öffnen</button><button data-del="${e.id}">Löschen</button></div>`).join("")||'<p class="muted">Noch nichts gespeichert.</p>';
  $("histList").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S=h[b.dataset.open];store.set("ick_current",S);bindHead();document.querySelector('[data-tab=einheit]').click();toast("Einheit geöffnet")});
  $("histList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm("Diese Einheit auf dem Gerät löschen?")){delete h[b.dataset.del];store.set("ick_hist",h);renderVerlauf()}});
 }
+
+async function ladePrep(silent){
+ if(!sync.repo||!sync.token){if(!silent)toast("Erst Repo und Token unter Kader und Sync eintragen");return}
+ try{const r=await gh("vorbereitet");if(!r.ok){if(!silent)toast(r.status==404?"Keine vorbereiteten Einheiten":"Fehler "+r.status);return}
+  const files=(await r.json()).filter(f=>f.name.endsWith(".json"));const h=store.get("ick_hist",{});let neuN=0;
+  for(const f of files){const x=await gh("vorbereitet/"+f.name);if(!x.ok)continue;const j=await x.json();
+   const e=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));
+   if(!e.id||h[e.id])continue;const base=neu();const m={...base,...e,gruppe:{...base.gruppe,...(e.gruppe||{})},kinder:e.kinder||{},staffeln:e.staffeln||[],staffelKinder:e.staffelKinder||{}};
+   h[m.id]=m;neuN++}
+  store.set("ick_hist",h);renderVerlauf();if(!silent||neuN)toast(neuN?neuN+" vorbereitete Einheit(en) geladen":"Nichts Neues")}catch(err){if(!silent)toast("Laden fehlgeschlagen")}}
+$("btnPrep").onclick=()=>ladePrep(false);
+setTimeout(()=>ladePrep(true),800);
 
 // ---------- Kader und Sync ----------
 $("kaderText").value=kader.map(k=>[k.name,k.jg,k.g].join(", ")).join("\n");
